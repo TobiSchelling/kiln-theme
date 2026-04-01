@@ -136,6 +136,46 @@ def render_target(
     return output_files
 
 
+# Targets that combine both variants into a single output (e.g., Obsidian themes)
+COMBINED_TARGETS = {"obsidian"}
+
+
+def render_combined_target(
+    env: Environment, target: str, contexts: dict[str, dict], dry_run: bool = False
+) -> list[Path]:
+    """Render templates that need all variants in a single file."""
+    templates = find_templates(target)
+    if not templates:
+        print(f"  [skip] No templates found for {target}", file=sys.stderr)
+        return []
+
+    # Build combined context: each variant's colors accessible as dark.*, light.*, etc.
+    combined = {"version": contexts[next(iter(contexts))]["version"]}
+    for variant_name, ctx in contexts.items():
+        combined[variant_name] = ctx["colors"]
+
+    output_files = []
+    for template_path in templates:
+        rel_path = template_path.relative_to(TEMPLATES_DIR)
+        template = env.get_template(str(rel_path))
+        rendered = template.render(**combined)
+
+        out_name = str(rel_path).removesuffix(".j2")
+        out_dir = DIST_DIR / target
+        out_path = out_dir / Path(out_name).name
+
+        if dry_run:
+            print(f"  [dry-run] {out_path}")
+        else:
+            out_dir.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(rendered)
+            print(f"  [wrote] {out_path}")
+
+        output_files.append(out_path)
+
+    return output_files
+
+
 def generate(
     variants: list[str] | None = None,
     targets: list[str] | None = None,
@@ -156,6 +196,20 @@ def generate(
 
     all_outputs: dict[str, list[Path]] = {}
 
+    # Handle combined targets (need all variants at once)
+    combined_in_targets = [t for t in targets if t in COMBINED_TARGETS]
+    per_variant_targets = [t for t in targets if t not in COMBINED_TARGETS]
+
+    if combined_in_targets:
+        contexts = {}
+        for variant_name in palette["variants"]:
+            contexts[variant_name] = build_context(palette, variant_name)
+
+        print("\n=== Kiln (combined) ===")
+        for target in combined_in_targets:
+            outputs = render_combined_target(env, target, contexts, dry_run=dry_run)
+            all_outputs[f"combined/{target}"] = outputs
+
     for variant_name in variants:
         if variant_name not in palette["variants"]:
             print(f"Unknown variant: {variant_name}", file=sys.stderr)
@@ -164,7 +218,7 @@ def generate(
         context = build_context(palette, variant_name)
         print(f"\n=== {context['display_name']} ===")
 
-        for target in targets:
+        for target in per_variant_targets:
             outputs = render_target(env, target, context, dry_run=dry_run)
             key = f"{variant_name}/{target}"
             all_outputs[key] = outputs

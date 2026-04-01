@@ -23,7 +23,7 @@ def test_build_context_dark():
     assert "peach" in ctx["colors"]
     assert ctx["colors"]["peach"]["hex"] == "#E08A50"
     assert ctx["colors"]["peach"]["hex_stripped"] == "E08A50"
-    assert ctx["colors"]["base"]["hex"] == "#211D17"
+    assert ctx["colors"]["base"]["hex"] == "#1A1714"
     assert ctx["colors"]["text"]["hex"] == "#F8F4F0"
 
 
