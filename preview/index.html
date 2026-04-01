@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiln Theme Preview</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #111; color: #eee; padding: 24px; }
+    .header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+    .header h1 { font-size: 24px; }
+    .variant-toggle { display: flex; gap: 4px; background: #222; border-radius: 8px; padding: 4px; }
+    .variant-toggle button {
+      padding: 6px 16px; border: none; border-radius: 6px; cursor: pointer;
+      font-size: 13px; background: transparent; color: #aaa; transition: all 0.2s;
+    }
+    .variant-toggle button.active { background: #333; color: #fff; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .panel { border-radius: 12px; overflow: hidden; }
+    .panel-header { padding: 10px 16px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .palette-section { margin-bottom: 20px; }
+    .palette-section h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding: 0 16px; }
+    .swatches { display: flex; gap: 4px; flex-wrap: wrap; padding: 0 16px; }
+    .swatch {
+      width: 44px; height: 44px; border-radius: 6px; display: flex;
+      align-items: center; justify-content: center; font-size: 7px;
+      font-family: monospace; cursor: pointer; position: relative;
+      transition: transform 0.15s;
+    }
+    .swatch:hover { transform: scale(1.15); z-index: 1; }
+    .swatch .tooltip {
+      display: none; position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%);
+      background: #000; color: #fff; padding: 2px 6px; border-radius: 4px;
+      font-size: 10px; white-space: nowrap; z-index: 10;
+    }
+    .swatch:hover .tooltip { display: block; }
+
+    .code-preview {
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 13px; line-height: 1.7; padding: 20px; overflow-x: auto;
+      tab-size: 2; white-space: pre;
+    }
+
+    .contrast-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .contrast-table th { text-align: left; padding: 6px 12px; font-weight: 500; }
+    .contrast-table td { padding: 6px 12px; font-family: monospace; }
+    .pass { color: #86BE60; }
+    .fail { color: #E8665E; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🔥 Kiln Theme Preview</h1>
+    <div class="variant-toggle">
+      <button class="active" onclick="setVariant('dark')">Dark</button>
+      <button onclick="setVariant('light')">Light</button>
+    </div>
+  </div>
+
+  <div id="content"></div>
+
+  <script>
+    let currentVariant = 'dark';
+    let palettes = {};
+
+    async function loadPalette(variant) {
+      const resp = await fetch(`../dist/web/${variant}/tokens.json`);
+      return resp.json();
+    }
+
+    function hexToRgb(hex) {
+      hex = hex.replace('#', '');
+      return {
+        r: parseInt(hex.substring(0, 2), 16),
+        g: parseInt(hex.substring(2, 4), 16),
+        b: parseInt(hex.substring(4, 6), 16)
+      };
+    }
+
+    function luminance(hex) {
+      const { r, g, b } = hexToRgb(hex);
+      const [rs, gs, bs] = [r, g, b].map(c => {
+        c = c / 255;
+        return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+    }
+
+    function contrastRatio(hex1, hex2) {
+      const l1 = luminance(hex1);
+      const l2 = luminance(hex2);
+      const lighter = Math.max(l1, l2);
+      const darker = Math.min(l1, l2);
+      return (lighter + 0.05) / (darker + 0.05);
+    }
+
+    function isLight(hex) {
+      return luminance(hex) > 0.5;
+    }
+
+    function setVariant(v) {
+      currentVariant = v;
+      document.querySelectorAll('.variant-toggle button').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.variant-toggle button:${v === 'dark' ? 'first' : 'last'}-child`).classList.add('active');
+      render();
+    }
+
+    function render() {
+      const p = palettes[currentVariant];
+      if (!p) return;
+      const c = p.colors;
+      const bg = c.base.hex;
+      const fg = c.text.hex;
+
+      const baseNames = ['crust','mantle','base','surface0','surface1','surface2','overlay0','overlay1','overlay2'];
+      const textNames = ['text','subtext1','subtext0','comment'];
+      const accentNames = ['red','maroon','peach','yellow','gold','green','teal','sky','sapphire','blue','lavender','mauve','pink','rose'];
+
+      function swatchHtml(name) {
+        const hex = c[name].hex;
+        const textColor = isLight(hex) ? '#111' : '#fff';
+        return `<div class="swatch" style="background:${hex}; color:${textColor}">
+          ${name.substring(0, 4)}
+          <span class="tooltip">${name}: ${hex}</span>
+        </div>`;
+      }
+
+      // Contrast checks
+      const contrastPairs = accentNames.map(name => {
+        const ratio = contrastRatio(c[name].hex, bg);
+        return { name, hex: c[name].hex, ratio: ratio.toFixed(1), pass: ratio >= 4.5 };
+      });
+
+      const html = `
+        <div class="grid">
+          <div>
+            <div class="panel" style="background:${c.mantle.hex}; padding:16px 0;">
+              <div class="palette-section">
+                <h3 style="color:${c.comment.hex}">Base & Surface</h3>
+                <div class="swatches">${baseNames.map(swatchHtml).join('')}</div>
+              </div>
+              <div class="palette-section">
+                <h3 style="color:${c.comment.hex}">Text</h3>
+                <div class="swatches">${textNames.map(swatchHtml).join('')}</div>
+              </div>
+              <div class="palette-section">
+                <h3 style="color:${c.comment.hex}">Accents</h3>
+                <div class="swatches">${accentNames.map(swatchHtml).join('')}</div>
+              </div>
+            </div>
+
+            <div class="panel" style="background:${c.mantle.hex}; margin-top:16px; padding:16px;">
+              <h3 style="color:${c.comment.hex}; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Contrast vs Background (${bg})</h3>
+              <table class="contrast-table" style="color:${c.text.hex}">
+                <tr><th style="color:${c.comment.hex}">Color</th><th style="color:${c.comment.hex}">Ratio</th><th style="color:${c.comment.hex}">WCAG AA</th></tr>
+                ${contrastPairs.map(p => `
+                  <tr>
+                    <td><span style="color:${p.hex}">■</span> ${p.name}</td>
+                    <td>${p.ratio}:1</td>
+                    <td class="${p.pass ? 'pass' : 'fail'}">${p.pass ? 'PASS' : 'FAIL'}</td>
+                  </tr>
+                `).join('')}
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel" style="background:${bg}">
+              <div class="panel-header" style="background:${c.crust.hex}; color:${c.subtext1.hex}">
+                TypeScript — Syntax Preview
+              </div>
+              <div class="code-preview" style="color:${fg}">
+<span style="color:${c.comment.hex}">/**
+ * Kiln theme palette loader.
+ * Demonstrates all syntax color roles.
+ */</span>
+<span style="color:${c.mauve.hex}">import</span> { <span style="color:${c.sapphire.hex}">readFileSync</span> } <span style="color:${c.mauve.hex}">from</span> <span style="color:${c.green.hex}">"node:fs"</span>;
+
+<span style="color:${c.rose.hex}">@cached</span>
+<span style="color:${c.mauve.hex}">interface</span> <span style="color:${c.teal.hex}">PaletteConfig</span> {
+  <span style="color:${c.peach.hex}">name</span>: <span style="color:${c.teal.hex}">string</span>;
+  <span style="color:${c.peach.hex}">variant</span>: <span style="color:${c.green.hex}">"dark"</span> <span style="color:${c.pink.hex}">|</span> <span style="color:${c.green.hex}">"light"</span>;
+  <span style="color:${c.peach.hex}">colors</span>: <span style="color:${c.teal.hex}">Record</span><span style="color:${c.pink.hex}">&lt;</span><span style="color:${c.teal.hex}">string</span>, <span style="color:${c.teal.hex}">string</span><span style="color:${c.pink.hex}">&gt;</span>;
+}
+
+<span style="color:${c.mauve.hex}">const</span> <span style="color:${fg}">WARMTH</span> <span style="color:${c.pink.hex}">=</span> <span style="color:${c.yellow.hex}">0.02</span>;
+
+<span style="color:${c.mauve.hex}">export function</span> <span style="color:${c.sapphire.hex}">loadPalette</span>(
+  <span style="color:${c.peach.hex}">config</span>: <span style="color:${c.teal.hex}">PaletteConfig</span>,
+): <span style="color:${c.teal.hex}">Map</span><span style="color:${c.pink.hex}">&lt;</span><span style="color:${c.teal.hex}">string</span>, <span style="color:${c.teal.hex}">string</span><span style="color:${c.pink.hex}">&gt;</span> {
+  <span style="color:${c.mauve.hex}">const</span> <span style="color:${c.lavender.hex}">palette</span> <span style="color:${c.pink.hex}">=</span> <span style="color:${c.mauve.hex}">new</span> <span style="color:${c.teal.hex}">Map</span>();
+  <span style="color:${c.mauve.hex}">const</span> <span style="color:${c.lavender.hex}">raw</span> <span style="color:${c.pink.hex}">=</span> <span style="color:${c.sapphire.hex}">readFileSync</span>(<span style="color:${c.green.hex}">"palette.yaml"</span>);
+
+  <span style="color:${c.mauve.hex}">if</span> (!<span style="color:${c.peach.hex}">config</span>.<span style="color:${c.peach.hex}">name</span>) {
+    <span style="color:${c.mauve.hex}">throw new</span> <span style="color:${c.red.hex}">Error</span>(<span style="color:${c.green.hex}">"Name required"</span>);
+  }
+
+  <span style="color:${c.mauve.hex}">for</span> (<span style="color:${c.mauve.hex}">const</span> [<span style="color:${c.lavender.hex}">key</span>, <span style="color:${c.lavender.hex}">val</span>] <span style="color:${c.mauve.hex}">of</span> <span style="color:${c.sky.hex}">this</span>.<span style="color:${c.peach.hex}">entries</span>) {
+    <span style="color:${c.lavender.hex}">palette</span>.<span style="color:${c.sapphire.hex}">set</span>(<span style="color:${c.lavender.hex}">key</span>, <span style="color:${c.lavender.hex}">val</span>);
+  }
+
+  <span style="color:${c.mauve.hex}">return</span> <span style="color:${c.lavender.hex}">palette</span>;
+}</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('content').innerHTML = html;
+    }
+
+    (async () => {
+      palettes.dark = await loadPalette('dark');
+      palettes.light = await loadPalette('light');
+      render();
+    })();
+  </script>
+</body>
+</html>

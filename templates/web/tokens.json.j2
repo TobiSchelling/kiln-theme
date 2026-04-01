@@ -1,0 +1,23 @@
+{
+  "name": "{{ display_name }}",
+  "version": "{{ version }}",
+  "variant": "{{ variant }}",
+  "colors": {
+    {% for name, c in colors.items() %}
+    "{{ name }}": {
+      "hex": "{{ c.hex }}",
+      "category": "{{ c.category }}"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  },
+  "syntax": {
+    {% for token, c in syntax.items() %}
+    "{{ token }}": "{{ c.hex }}"{% if not loop.last %},{% endif %}
+    {% endfor %}
+  },
+  "ui": {
+    {% for role, c in ui.items() %}
+    "{{ role }}": "{{ c.hex }}"{% if not loop.last %},{% endif %}
+    {% endfor %}
+  }
+}
