@@ -16,40 +16,40 @@ variants:
 
     base:
       crust:
-        hex: "#12100C"
-        oklch: { l: 0.10, c: 0.015, h: 70 }
+        hex: "#0C0B09"
+        oklch: { l: 0.06, c: 0.012, h: 70 }
         role: "Window frame, status bars"
       mantle:
-        hex: "#191612"
-        oklch: { l: 0.13, c: 0.015, h: 70 }
+        hex: "#121110"
+        oklch: { l: 0.09, c: 0.012, h: 70 }
         role: "Sidebar, panel backgrounds"
       base:
-        hex: "#211D17"
-        oklch: { l: 0.16, c: 0.018, h: 70 }
+        hex: "#1A1714"
+        oklch: { l: 0.12, c: 0.015, h: 70 }
         role: "Editor background"
       surface0:
-        hex: "#2C2720"
-        oklch: { l: 0.21, c: 0.018, h: 70 }
+        hex: "#24211B"
+        oklch: { l: 0.17, c: 0.016, h: 70 }
         role: "Current line highlight"
       surface1:
-        hex: "#38322A"
-        oklch: { l: 0.26, c: 0.018, h: 70 }
+        hex: "#302C24"
+        oklch: { l: 0.22, c: 0.018, h: 70 }
         role: "Hover states, active tabs"
       surface2:
-        hex: "#443D33"
-        oklch: { l: 0.31, c: 0.018, h: 70 }
+        hex: "#3C372E"
+        oklch: { l: 0.27, c: 0.018, h: 70 }
         role: "Borders, dividers"
       overlay0:
-        hex: "#56503E"
-        oklch: { l: 0.38, c: 0.020, h: 70 }
+        hex: "#4E4838"
+        oklch: { l: 0.34, c: 0.020, h: 70 }
         role: "Popup menus, tooltips"
       overlay1:
-        hex: "#68614D"
-        oklch: { l: 0.45, c: 0.020, h: 70 }
+        hex: "#605948"
+        oklch: { l: 0.41, c: 0.020, h: 70 }
         role: "Search widgets, cmd palette"
       overlay2:
-        hex: "#7A735C"
-        oklch: { l: 0.52, c: 0.020, h: 70 }
+        hex: "#726A56"
+        oklch: { l: 0.48, c: 0.020, h: 70 }
         role: "Nested overlays"
 
     text:

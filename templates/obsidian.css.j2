@@ -94,4 +94,77 @@
   --nav-item-color-active: {{ colors.peach.hex }};
   --nav-item-background-hover: {{ colors.surface0.hex }};
   --nav-item-background-active: {{ colors.surface1.hex }};
+
+  /* Tab bar */
+  --tab-background-active: {{ colors.base.hex }};
+  --tab-text-color-focused: {{ colors.peach.hex }};
+  --tab-text-color-focused-active: {{ colors.peach.hex }};
+  --tab-text-color: {{ colors.comment.hex }};
+  --tab-text-color-focused-active-current: {{ colors.peach.hex }};
+  --tab-outline-color: transparent;
+  --tab-stacked-header-bg: {{ colors.mantle.hex }};
+  --tab-container-background: {{ colors.mantle.hex }};
+  --tab-divider-color: {{ colors.surface2.hex }};
+
+  /* Ribbon (left sidebar icons) */
+  --ribbon-background: {{ colors.crust.hex }};
+  --ribbon-background-collapsed: {{ colors.crust.hex }};
+
+  /* Titlebar */
+  --titlebar-background: {{ colors.crust.hex }};
+  --titlebar-background-focused: {{ colors.crust.hex }};
+  --titlebar-text-color: {{ colors.subtext1.hex }};
+  --titlebar-text-color-focused: {{ colors.text.hex }};
+
+  /* Workspace area */
+  --workspace-background-translucent: {{ colors.crust.hex }};
+
+  /* Sidebar tabs */
+  --tab-outline-width: 0px;
 }
+
+/* Direct element overrides for areas CSS variables don't reach */
+{% if variant == 'dark' %}
+.theme-dark .titlebar,
+.theme-dark .mod-top .workspace-tab-header-container {
+  background-color: {{ colors.mantle.hex }} !important;
+}
+
+.theme-dark .workspace-tab-header {
+  background-color: {{ colors.mantle.hex }} !important;
+}
+
+.theme-dark .workspace-tab-header.is-active {
+  background-color: {{ colors.base.hex }} !important;
+}
+
+.theme-dark .workspace-tab-header-inner-title {
+  color: {{ colors.comment.hex }};
+}
+
+.theme-dark .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+  color: {{ colors.peach.hex }};
+}
+{% else %}
+.theme-light .titlebar,
+.theme-light .mod-top .workspace-tab-header-container {
+  background-color: {{ colors.mantle.hex }} !important;
+}
+
+.theme-light .workspace-tab-header {
+  background-color: {{ colors.mantle.hex }} !important;
+}
+
+.theme-light .workspace-tab-header.is-active {
+  background-color: {{ colors.base.hex }} !important;
+}
+
+.theme-light .workspace-tab-header-inner-title {
+  color: {{ colors.comment.hex }};
+}
+
+.theme-light .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+  color: {{ colors.peach.hex }};
+}
+{% endif %}
+
