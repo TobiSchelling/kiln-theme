@@ -227,10 +227,14 @@ def generate(
 
 
 def main():
+    # Load palette early so we can use variant names in CLI choices
+    palette = load_palette()
+    variant_names = list(palette["variants"].keys())
+
     parser = argparse.ArgumentParser(description="Generate Kiln theme configs")
     parser.add_argument(
         "--variant",
-        choices=["dark", "light", "all"],
+        choices=variant_names + ["all"],
         default="all",
         help="Which variant to generate",
     )
