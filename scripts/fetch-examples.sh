@@ -18,44 +18,48 @@ fetch() {
 
 FAIL=0
 
-# ─── Catppuccin (Mocha) ──────────────────────────────────────────────
+# ─── Catppuccin (all four flavors) ────────────────────────────────────
 
-echo "=== Catppuccin (Mocha) ==="
+echo "=== Catppuccin ==="
 
+FLAVORS="mocha macchiato frappe latte"
+
+# Central palette (contains all flavors)
 fetch examples/catppuccin/palette.json \
   "https://raw.githubusercontent.com/catppuccin/palette/main/palette.json" || ((FAIL++))
 
-# Ghostty
-fetch examples/catppuccin/ghostty/ghostty.conf \
-  "https://raw.githubusercontent.com/catppuccin/ghostty/main/themes/catppuccin-mocha.conf" || ((FAIL++))
+# Per-flavor: ghostty, fish, nvim palette, tmux
+for f in $FLAVORS; do
+  fetch "examples/catppuccin/ghostty/${f}.conf" \
+    "https://raw.githubusercontent.com/catppuccin/ghostty/main/themes/catppuccin-${f}.conf" || ((FAIL++))
 
-# Fish
-fetch examples/catppuccin/fish/fish.theme \
-  "https://raw.githubusercontent.com/catppuccin/fish/main/themes/catppuccin-mocha.theme" || ((FAIL++))
+  # latte is only in static/ subfolder upstream
+  if [ "$f" = "latte" ]; then
+    fetch "examples/catppuccin/fish/${f}.theme" \
+      "https://raw.githubusercontent.com/catppuccin/fish/main/themes/static/catppuccin-${f}.theme" || ((FAIL++))
+  else
+    fetch "examples/catppuccin/fish/${f}.theme" \
+      "https://raw.githubusercontent.com/catppuccin/fish/main/themes/catppuccin-${f}.theme" || ((FAIL++))
+  fi
 
-# Neovim
-fetch examples/catppuccin/nvim/mocha.lua \
-  "https://raw.githubusercontent.com/catppuccin/nvim/main/lua/catppuccin/palettes/mocha.lua" || ((FAIL++))
-fetch examples/catppuccin/nvim/editor.lua \
-  "https://raw.githubusercontent.com/catppuccin/nvim/main/lua/catppuccin/groups/editor.lua" || ((FAIL++))
-fetch examples/catppuccin/nvim/syntax.lua \
-  "https://raw.githubusercontent.com/catppuccin/nvim/main/lua/catppuccin/groups/syntax.lua" || ((FAIL++))
-fetch examples/catppuccin/nvim/treesitter.lua \
-  "https://raw.githubusercontent.com/catppuccin/nvim/main/lua/catppuccin/groups/treesitter.lua" || ((FAIL++))
-fetch examples/catppuccin/nvim/semantic_tokens.lua \
-  "https://raw.githubusercontent.com/catppuccin/nvim/main/lua/catppuccin/groups/semantic_tokens.lua" || ((FAIL++))
-fetch examples/catppuccin/nvim/terminal.lua \
-  "https://raw.githubusercontent.com/catppuccin/nvim/main/lua/catppuccin/groups/terminal.lua" || ((FAIL++))
+  fetch "examples/catppuccin/nvim/${f}.lua" \
+    "https://raw.githubusercontent.com/catppuccin/nvim/main/lua/catppuccin/palettes/${f}.lua" || ((FAIL++))
 
-# Tmux
-fetch examples/catppuccin/tmux/tmux.conf \
-  "https://raw.githubusercontent.com/catppuccin/tmux/main/themes/catppuccin_mocha_tmux.conf" || ((FAIL++))
+  fetch "examples/catppuccin/tmux/${f}.conf" \
+    "https://raw.githubusercontent.com/catppuccin/tmux/main/themes/catppuccin_${f}_tmux.conf" || ((FAIL++))
+done
 
-# Delta
+# Shared across flavors: nvim highlight groups
+for group in editor syntax treesitter semantic_tokens terminal; do
+  fetch "examples/catppuccin/nvim/${group}.lua" \
+    "https://raw.githubusercontent.com/catppuccin/nvim/main/lua/catppuccin/groups/${group}.lua" || ((FAIL++))
+done
+
+# Delta (all flavors in one file)
 fetch examples/catppuccin/delta/delta.gitconfig \
   "https://raw.githubusercontent.com/catppuccin/delta/main/catppuccin.gitconfig" || ((FAIL++))
 
-# VS Code
+# VS Code (TypeScript source, shared across flavors)
 fetch examples/catppuccin/vscode/tokenColors.ts \
   "https://raw.githubusercontent.com/catppuccin/vscode/main/packages/catppuccin-vsc/src/theme/tokenColors.ts" || ((FAIL++))
 fetch examples/catppuccin/vscode/uiColors.ts \
@@ -63,7 +67,7 @@ fetch examples/catppuccin/vscode/uiColors.ts \
 fetch examples/catppuccin/vscode/semanticTokens.ts \
   "https://raw.githubusercontent.com/catppuccin/vscode/main/packages/catppuccin-vsc/src/theme/semanticTokens.ts" || ((FAIL++))
 
-# Obsidian
+# Obsidian (single CSS with all variants)
 fetch examples/catppuccin/obsidian/manifest.json \
   "https://raw.githubusercontent.com/catppuccin/obsidian/main/manifest.json" || ((FAIL++))
 fetch examples/catppuccin/obsidian/theme.css \

@@ -12,11 +12,15 @@ into an already-proven structure rather than inventing from scratch.
 
 ## Variants Fetched
 
-| Theme | Variant | Source |
-|-------|---------|--------|
-| Catppuccin | Mocha (dark) | Multiple repos under `github.com/catppuccin/` |
+| Theme | Variants | Source |
+|-------|----------|--------|
+| Catppuccin | All four: Mocha, Macchiato, Frappé, Latte | Multiple repos under `github.com/catppuccin/` |
 | Dracula | Default (dark-only) | Multiple repos under `github.com/dracula/` |
 | Tokyo Night | Night (dark) | `folke/tokyonight.nvim` extras + companion repos |
+
+Catppuccin's four flavors share identical structure (same 26 color names, same
+key ordering) — only the hex values differ. This makes them the ideal reference
+for validating that Kiln's "same structure, different colors" approach works.
 
 ## Coverage Matrix
 
