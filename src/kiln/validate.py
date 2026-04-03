@@ -70,9 +70,11 @@ def validate_variant(variant_name: str) -> list[dict]:
 
 
 def main():
-    for variant in ("dark", "light"):
+    palette = load_palette()
+    for variant in palette["variants"]:
+        display_name = palette["variants"][variant]["display_name"]
         print(f"\n{'=' * 60}")
-        print(f"  {variant.upper()} VARIANT — WCAG Contrast Validation")
+        print(f"  {display_name} — WCAG Contrast Validation")
         print(f"{'=' * 60}")
 
         results = validate_variant(variant)

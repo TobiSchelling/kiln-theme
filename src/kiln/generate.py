@@ -149,6 +149,14 @@ def render_target(
 COMBINED_TARGETS = {"obsidian"}
 
 
+DARK_VARIANTS = {"ember", "forge"}
+LIGHT_VARIANTS = {"dawn", "glow"}
+
+# Default dark/light pair for combined targets (e.g., Obsidian)
+COMBINED_DARK = "ember"
+COMBINED_LIGHT = "glow"
+
+
 def render_combined_target(
     env: Environment, target: str, contexts: dict[str, dict], dry_run: bool = False
 ) -> list[Path]:
@@ -158,13 +166,17 @@ def render_combined_target(
         print(f"  [skip] No templates found for {target}", file=sys.stderr)
         return []
 
-    # Build combined context: each variant's colors + headings accessible as dark.*, light.*, etc.
+    # Build combined context: map the default dark/light pair into
+    # "dark" and "light" keys so templates can use dark.*/light.* references.
     combined = {"version": contexts[next(iter(contexts))]["version"]}
-    for variant_name, ctx in contexts.items():
-        # Merge colors and headings into one dict so templates can access both
+    for variant_name, template_key in (
+        (COMBINED_DARK, "dark"),
+        (COMBINED_LIGHT, "light"),
+    ):
+        ctx = contexts[variant_name]
         variant_ctx = dict(ctx["colors"])
         variant_ctx["_headings"] = ctx.get("headings", {})
-        combined[variant_name] = variant_ctx
+        combined[template_key] = variant_ctx
 
     output_files = []
     for template_path in templates:

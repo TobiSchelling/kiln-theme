@@ -10,8 +10,8 @@
 #
 # Environment:
 #   OBSIDIAN_VAULT  Path to Obsidian vault (for obsidian target)
-#   KILN_DARK       Dark variant for combined targets (default: same as variant)
-#   KILN_LIGHT      Light variant for combined targets (default: light/glow/dawn)
+#   KILN_DARK       Dark variant for combined targets (default: ember)
+#   KILN_LIGHT      Light variant for combined targets (default: glow)
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -241,7 +241,7 @@ print(p['variants']['$VARIANT']['display_name'])
 ")
   local ui_theme="vs-dark"
   # Detect light variants
-  case "$VARIANT" in light | glow | dawn | catppuccin_latte) ui_theme="vs" ;; esac
+  case "$VARIANT" in glow | dawn) ui_theme="vs" ;; esac
 
   cat >"$ext_dir/package.json" <<EOFPKG
 {
@@ -292,12 +292,12 @@ print(p['variants']['$VARIANT']['display_name'])
   local dark_v="$VARIANT"
   local light_v=""
   case "$VARIANT" in
-    dark | forge | ember | catppuccin_mocha | catppuccin_macchiato | catppuccin_frappe)
+    ember | forge)
       dark_v="$VARIANT"
-      light_v="${KILN_LIGHT:-light}"
+      light_v="${KILN_LIGHT:-glow}"
       ;;
-    light | glow | dawn | catppuccin_latte)
-      dark_v="${KILN_DARK:-dark}"
+    glow | dawn)
+      dark_v="${KILN_DARK:-ember}"
       light_v="$VARIANT"
       ;;
   esac

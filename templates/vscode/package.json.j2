@@ -1,7 +1,7 @@
 {
-  "name": "kiln-theme",
-  "displayName": "Kiln Theme",
-  "description": "A warm clarity color theme",
+  "name": "kiln-{{ variant }}",
+  "displayName": "{{ display_name }}",
+  "description": "Kiln — {{ display_name }} color theme",
   "version": "{{ version }}",
   "publisher": "tobias",
   "engines": { "vscode": "^1.80.0" },
@@ -9,14 +9,9 @@
   "contributes": {
     "themes": [
       {
-        "label": "Kiln Dark",
-        "uiTheme": "vs-dark",
-        "path": "./themes/kiln-dark.json"
-      },
-      {
-        "label": "Kiln Light",
-        "uiTheme": "vs",
-        "path": "./themes/kiln-light.json"
+        "label": "{{ display_name }}",
+        "uiTheme": "{% if variant in ('ember', 'forge') %}vs-dark{% else %}vs{% endif %}",
+        "path": "./themes/kiln.json"
       }
     ]
   }

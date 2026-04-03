@@ -1,6 +1,6 @@
 {
   "name": "{{ display_name }}",
-  "type": "{% if variant == 'dark' %}dark{% else %}light{% endif %}",
+  "type": "{% if variant in ('ember', 'forge') %}dark{% else %}light{% endif %}",
   "semanticHighlighting": true,
   "colors": {
     "editor.background": "{{ colors.base.hex }}",

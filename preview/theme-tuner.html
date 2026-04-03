@@ -155,10 +155,7 @@ body {
 </div>
 
 <script>
-const VARIANTS = [
-  'dark','light','ember','forge','dawn','glow',
-  'catppuccin_mocha','catppuccin_macchiato','catppuccin_frappe','catppuccin_latte'
-];
+const VARIANTS = ['ember', 'forge', 'dawn', 'glow'];
 const TABS = ['Mappings', 'LazyVim', 'Obsidian', 'Terminal'];
 const BASE_NAMES = ['crust','mantle','base','surface0','surface1','surface2','overlay0','overlay1','overlay2'];
 const TEXT_NAMES = ['text','subtext1','subtext0','comment'];
@@ -328,7 +325,7 @@ function renderLazyVim() {
     <div class="lv-line"><span class="lv-linenum">5</span><span class="lv-code"></span></div>
     <div class="lv-line"><span class="lv-linenum">6</span><span class="lv-code"><span style="color:var(--h-mauve)">interface</span> <span style="color:var(--h-teal)">PaletteConfig</span> {</span></div>
     <div class="lv-line cursorline"><span class="lv-linenum active">7</span><span class="lv-code">  <span style="color:var(--h-peach)">name</span>: <span style="color:var(--h-teal)">string</span>;</span></div>
-    <div class="lv-line"><span class="lv-linenum">8</span><span class="lv-code">  <span style="color:var(--h-peach)">variant</span>: <span style="color:var(--h-green)">"dark"</span> <span style="color:var(--h-pink)">|</span> <span style="color:var(--h-green)">"light"</span>;</span></div>
+    <div class="lv-line"><span class="lv-linenum">8</span><span class="lv-code">  <span style="color:var(--h-peach)">variant</span>: <span style="color:var(--h-green)">"ember"</span> <span style="color:var(--h-pink)">|</span> <span style="color:var(--h-green)">"forge"</span> <span style="color:var(--h-pink)">|</span> <span style="color:var(--h-green)">"dawn"</span> <span style="color:var(--h-pink)">|</span> <span style="color:var(--h-green)">"glow"</span>;</span></div>
     <div class="lv-line"><span class="lv-linenum">9</span><span class="lv-code">}</span></div>
     <div class="lv-line"><span class="lv-linenum">10</span><span class="lv-code"></span></div>
     <div class="lv-line"><span class="lv-linenum">11</span><span class="lv-code"><span style="color:var(--h-mauve)">const</span> <span style="color:var(--h-gold)">MAX_CHROMA</span> <span style="color:var(--h-pink)">=</span> <span style="color:var(--h-yellow)">0.25</span>;</span></div>
@@ -389,7 +386,7 @@ function renderTerminal() {
     <div class="tm-ansi-grid">${ab.map(n=>`<div class="tm-ansi-block" style="background:var(--h-${n})"></div>`).join('')}</div></div>
   <div class="tm-pane tm-pane2">
     <div><span style="color:var(--h-sapphire)">$</span> <span style="color:var(--h-sapphire)">git</span> <span style="color:var(--h-peach)">log</span> <span style="color:var(--h-comment)">--oneline -4</span></div>
-    <div><span style="color:var(--h-yellow)">c42cdf0</span> <span style="color:var(--h-text)">Add Catppuccin flavors</span></div>
+    <div><span style="color:var(--h-yellow)">c42cdf0</span> <span style="color:var(--h-text)">Add Hearth variants</span></div>
     <div><span style="color:var(--h-yellow)">3221d4e</span> <span style="color:var(--h-text)">Fetch blueprint examples</span></div>
     <div><span style="color:var(--h-yellow)">f0801bf</span> <span style="color:var(--h-text)">Add theme blueprints</span></div>
     <div><span style="color:var(--h-yellow)">cd8aecf</span> <span style="color:var(--h-text)">Document installation</span></div></div>
