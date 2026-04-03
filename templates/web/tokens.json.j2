@@ -6,6 +6,8 @@
     {% for name, c in colors.items() %}
     "{{ name }}": {
       "hex": "{{ c.hex }}",
+      "oklch": { "l": {{ "%.3f"|format(c.oklch.l) }}, "c": {{ "%.3f"|format(c.oklch.c) }}, "h": {{ "%.0f"|format(c.oklch.h) }} },
+      "role": "{{ c.role }}",
       "category": "{{ c.category }}"
     }{% if not loop.last %},{% endif %}
     {% endfor %}

@@ -75,6 +75,14 @@ def build_context(palette: dict, variant_name: str) -> dict:
         if color_ref in colors:
             ui_resolved[role] = colors[color_ref]
 
+    # Resolve heading mapping (per-variant with default fallback)
+    heading_map = palette.get("heading_mapping", {})
+    headings_raw = heading_map.get(variant_name, heading_map.get("default", {}))
+    headings_resolved = {}
+    for level, color_ref in headings_raw.items():
+        if color_ref in colors:
+            headings_resolved[level] = colors[color_ref]
+
     return {
         "theme_name": palette["name"],
         "version": palette["version"],
@@ -84,6 +92,7 @@ def build_context(palette: dict, variant_name: str) -> dict:
         "ansi": ansi_resolved,
         "syntax": syntax_resolved,
         "ui": ui_resolved,
+        "headings": headings_resolved,
         # Category-level access for iteration
         "base_colors": {k: v for k, v in colors.items() if v["category"] == "base"},
         "text_colors": {k: v for k, v in colors.items() if v["category"] == "text"},
@@ -149,10 +158,13 @@ def render_combined_target(
         print(f"  [skip] No templates found for {target}", file=sys.stderr)
         return []
 
-    # Build combined context: each variant's colors accessible as dark.*, light.*, etc.
+    # Build combined context: each variant's colors + headings accessible as dark.*, light.*, etc.
     combined = {"version": contexts[next(iter(contexts))]["version"]}
     for variant_name, ctx in contexts.items():
-        combined[variant_name] = ctx["colors"]
+        # Merge colors and headings into one dict so templates can access both
+        variant_ctx = dict(ctx["colors"])
+        variant_ctx["_headings"] = ctx.get("headings", {})
+        combined[variant_name] = variant_ctx
 
     output_files = []
     for template_path in templates:

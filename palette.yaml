@@ -7,7 +7,7 @@
 #                180=teal, 220=blue, 270=purple, 330=magenta
 
 name: kiln
-version: "0.1.0"
+version: "1.0.0"
 author: Tobias
 
 variants:
@@ -245,6 +245,481 @@ variants:
       rose:
         hex: "#984860"
         oklch: { l: 0.44, c: 0.10, h: 10 }
+        role: "Decorators, annotations"
+
+  # ── Hearth variants (fiery glow, Dracula-inspired saturation) ─────
+  # Fewer distinct hues, higher chroma, warm amber bias.
+
+  ember:
+    display_name: "Hearth Ember"
+
+    base:
+      crust:
+        hex: "#000000"
+        oklch: { l: 0.030, c: 0.014, h: 70 }
+        role: "Window frame, status bars"
+      mantle:
+        hex: "#030100"
+        oklch: { l: 0.076, c: 0.014, h: 70 }
+        role: "Sidebar, panel backgrounds"
+      base:
+        hex: "#090502"
+        oklch: { l: 0.122, c: 0.014, h: 70 }
+        role: "Editor background"
+      surface0:
+        hex: "#130E09"
+        oklch: { l: 0.169, c: 0.014, h: 70 }
+        role: "Current line highlight"
+      surface1:
+        hex: "#1E1812"
+        oklch: { l: 0.215, c: 0.014, h: 70 }
+        role: "Hover states, active tabs"
+      surface2:
+        hex: "#29231D"
+        oklch: { l: 0.261, c: 0.014, h: 70 }
+        role: "Borders, dividers"
+      overlay0:
+        hex: "#342F28"
+        oklch: { l: 0.307, c: 0.014, h: 70 }
+        role: "Popup menus, tooltips"
+      overlay1:
+        hex: "#403A34"
+        oklch: { l: 0.354, c: 0.014, h: 70 }
+        role: "Search widgets, cmd palette"
+      overlay2:
+        hex: "#4D4740"
+        oklch: { l: 0.400, c: 0.014, h: 70 }
+        role: "Nested overlays"
+
+    text:
+      text:
+        hex: "#FBF4ED"
+        oklch: { l: 0.970, c: 0.012, h: 70 }
+        role: "Primary text"
+      subtext1:
+        hex: "#C9C3BC"
+        oklch: { l: 0.820, c: 0.012, h: 70 }
+        role: "Labels, metadata"
+      subtext0:
+        hex: "#9D9790"
+        oklch: { l: 0.680, c: 0.012, h: 70 }
+        role: "Placeholders, disabled"
+      comment:
+        hex: "#68625C"
+        oklch: { l: 0.500, c: 0.012, h: 70 }
+        role: "Code comments"
+
+    accents:
+      red:
+        hex: "#E45D58"
+        oklch: { l: 0.650, c: 0.170, h: 25 }
+        role: "Errors, deletions"
+      maroon:
+        hex: "#D96B3E"
+        oklch: { l: 0.650, c: 0.150, h: 42 }
+        role: "Diff modified"
+      peach:
+        hex: "#D3721E"
+        oklch: { l: 0.650, c: 0.150, h: 55 }
+        role: "Properties, params (signature accent)"
+        signature: true
+      yellow:
+        hex: "#B48700"
+        oklch: { l: 0.650, c: 0.150, h: 85 }
+        role: "Numbers, booleans, warnings"
+      gold:
+        hex: "#AE8A0D"
+        oklch: { l: 0.650, c: 0.130, h: 90 }
+        role: "Enum values, special constants"
+      green:
+        hex: "#68A244"
+        oklch: { l: 0.650, c: 0.140, h: 135 }
+        role: "Strings, success, additions"
+      teal:
+        hex: "#3EA38C"
+        oklch: { l: 0.650, c: 0.100, h: 175 }
+        role: "Types, interfaces"
+      sky:
+        hex: "#339EB5"
+        oklch: { l: 0.650, c: 0.100, h: 215 }
+        role: "self/this, info, links"
+      sapphire:
+        hex: "#3D98D1"
+        oklch: { l: 0.650, c: 0.120, h: 240 }
+        role: "Functions, methods"
+      blue:
+        hex: "#5591DD"
+        oklch: { l: 0.650, c: 0.130, h: 255 }
+        role: "Selection, focus, UI accent"
+      lavender:
+        hex: "#8F7EDE"
+        oklch: { l: 0.650, c: 0.140, h: 290 }
+        role: "Variables, local bindings"
+      mauve:
+        hex: "#B56AD5"
+        oklch: { l: 0.650, c: 0.170, h: 315 }
+        role: "Keywords, control flow"
+      pink:
+        hex: "#D162A5"
+        oklch: { l: 0.650, c: 0.160, h: 345 }
+        role: "Operators"
+      rose:
+        hex: "#CE6E77"
+        oklch: { l: 0.650, c: 0.120, h: 15 }
+        role: "Decorators, annotations"
+
+  glow:
+    display_name: "Hearth Glow"
+
+    base:
+      crust:
+        hex: "#EFE8E1"
+        oklch: { l: 0.935, c: 0.012, h: 70 }
+        role: "Window frame, status bars"
+      mantle:
+        hex: "#F9F2EB"
+        oklch: { l: 0.965, c: 0.012, h: 70 }
+        role: "Sidebar, panel backgrounds"
+      base:
+        hex: "#FFFCF5"
+        oklch: { l: 0.995, c: 0.012, h: 70 }
+        role: "Editor background"
+      surface0:
+        hex: "#E7E0D9"
+        oklch: { l: 0.910, c: 0.012, h: 70 }
+        role: "Current line highlight"
+      surface1:
+        hex: "#D9D3CC"
+        oklch: { l: 0.870, c: 0.012, h: 70 }
+        role: "Hover states, active tabs"
+      surface2:
+        hex: "#CCC6BF"
+        oklch: { l: 0.830, c: 0.012, h: 70 }
+        role: "Borders, dividers"
+      overlay0:
+        hex: "#BCB6AF"
+        oklch: { l: 0.780, c: 0.012, h: 70 }
+        role: "Popup menus, tooltips"
+      overlay1:
+        hex: "#ADA7A0"
+        oklch: { l: 0.730, c: 0.012, h: 70 }
+        role: "Search widgets, cmd palette"
+      overlay2:
+        hex: "#9D9790"
+        oklch: { l: 0.680, c: 0.012, h: 70 }
+        role: "Nested overlays"
+
+    text:
+      text:
+        hex: "#171008"
+        oklch: { l: 0.180, c: 0.020, h: 70 }
+        role: "Primary text"
+      subtext1:
+        hex: "#3A3128"
+        oklch: { l: 0.320, c: 0.020, h: 70 }
+        role: "Labels, metadata"
+      subtext0:
+        hex: "#5D5449"
+        oklch: { l: 0.450, c: 0.020, h: 70 }
+        role: "Placeholders, disabled"
+      comment:
+        hex: "#978D82"
+        oklch: { l: 0.650, c: 0.020, h: 70 }
+        role: "Code comments"
+
+    accents:
+      red:
+        hex: "#C90019"
+        oklch: { l: 0.520, c: 0.220, h: 25 }
+        role: "Errors, deletions"
+      maroon:
+        hex: "#B03F00"
+        oklch: { l: 0.520, c: 0.160, h: 42 }
+        role: "Diff modified"
+      peach:
+        hex: "#A34D00"
+        oklch: { l: 0.520, c: 0.140, h: 55 }
+        role: "Properties, params (signature accent)"
+        signature: true
+      yellow:
+        hex: "#7D6700"
+        oklch: { l: 0.520, c: 0.110, h: 95 }
+        role: "Numbers, booleans, warnings"
+      gold:
+        hex: "#786900"
+        oklch: { l: 0.520, c: 0.110, h: 100 }
+        role: "Enum values, special constants"
+      green:
+        hex: "#227E00"
+        oklch: { l: 0.520, c: 0.170, h: 140 }
+        role: "Strings, success, additions"
+      teal:
+        hex: "#007B66"
+        oklch: { l: 0.520, c: 0.100, h: 175 }
+        role: "Types, interfaces"
+      sky:
+        hex: "#007590"
+        oklch: { l: 0.520, c: 0.100, h: 220 }
+        role: "self/this, info, links"
+      sapphire:
+        hex: "#006EB3"
+        oklch: { l: 0.520, c: 0.140, h: 245 }
+        role: "Functions, methods"
+      blue:
+        hex: "#005CE4"
+        oklch: { l: 0.520, c: 0.220, h: 260 }
+        role: "Selection, focus, UI accent"
+      lavender:
+        hex: "#7500FF"
+        oklch: { l: 0.520, c: 0.300, h: 290 }
+        role: "Variables, local bindings"
+      mauve:
+        hex: "#9D00CB"
+        oklch: { l: 0.520, c: 0.260, h: 315 }
+        role: "Keywords, control flow"
+      pink:
+        hex: "#BA0086"
+        oklch: { l: 0.520, c: 0.230, h: 345 }
+        role: "Operators"
+      rose:
+        hex: "#C3004D"
+        oklch: { l: 0.520, c: 0.210, h: 10 }
+        role: "Decorators, annotations"
+
+  forge:
+    display_name: "Hearth Forge"
+
+    base:
+      crust:
+        hex: "#010100"
+        oklch: { l: 0.060, c: 0.018, h: 70 }
+        role: "Window frame, status bars"
+      mantle:
+        hex: "#080401"
+        oklch: { l: 0.112, c: 0.018, h: 70 }
+        role: "Sidebar, panel backgrounds"
+      base:
+        hex: "#130D06"
+        oklch: { l: 0.165, c: 0.018, h: 70 }
+        role: "Editor background"
+      surface0:
+        hex: "#1F1911"
+        oklch: { l: 0.217, c: 0.018, h: 70 }
+        role: "Current line highlight"
+      surface1:
+        hex: "#2C251D"
+        oklch: { l: 0.270, c: 0.018, h: 70 }
+        role: "Hover states, active tabs"
+      surface2:
+        hex: "#3A322A"
+        oklch: { l: 0.323, c: 0.018, h: 70 }
+        role: "Borders, dividers"
+      overlay0:
+        hex: "#474037"
+        oklch: { l: 0.375, c: 0.018, h: 70 }
+        role: "Popup menus, tooltips"
+      overlay1:
+        hex: "#564E45"
+        oklch: { l: 0.427, c: 0.018, h: 70 }
+        role: "Search widgets, cmd palette"
+      overlay2:
+        hex: "#645C53"
+        oklch: { l: 0.480, c: 0.018, h: 70 }
+        role: "Nested overlays"
+
+    text:
+      text:
+        hex: "#FBF4ED"
+        oklch: { l: 0.970, c: 0.012, h: 70 }
+        role: "Primary text"
+      subtext1:
+        hex: "#C9C3BC"
+        oklch: { l: 0.820, c: 0.012, h: 70 }
+        role: "Labels, metadata"
+      subtext0:
+        hex: "#9D9790"
+        oklch: { l: 0.680, c: 0.012, h: 70 }
+        role: "Placeholders, disabled"
+      comment:
+        hex: "#68625C"
+        oklch: { l: 0.500, c: 0.012, h: 70 }
+        role: "Code comments"
+
+    accents:
+      red:
+        hex: "#EF6661"
+        oklch: { l: 0.680, c: 0.170, h: 25 }
+        role: "Errors, deletions"
+      maroon:
+        hex: "#E37547"
+        oklch: { l: 0.680, c: 0.150, h: 42 }
+        role: "Diff modified"
+      peach:
+        hex: "#DD7B2B"
+        oklch: { l: 0.680, c: 0.150, h: 55 }
+        role: "Properties, params (signature accent)"
+        signature: true
+      yellow:
+        hex: "#BF9000"
+        oklch: { l: 0.680, c: 0.150, h: 85 }
+        role: "Numbers, booleans, warnings"
+      gold:
+        hex: "#B79420"
+        oklch: { l: 0.680, c: 0.130, h: 90 }
+        role: "Enum values, special constants"
+      green:
+        hex: "#71AB4D"
+        oklch: { l: 0.680, c: 0.140, h: 135 }
+        role: "Strings, success, additions"
+      teal:
+        hex: "#49AC95"
+        oklch: { l: 0.680, c: 0.100, h: 175 }
+        role: "Types, interfaces"
+      sky:
+        hex: "#3FA8BF"
+        oklch: { l: 0.680, c: 0.100, h: 215 }
+        role: "self/this, info, links"
+      sapphire:
+        hex: "#48A1DB"
+        oklch: { l: 0.680, c: 0.120, h: 240 }
+        role: "Functions, methods"
+      blue:
+        hex: "#5E9AE7"
+        oklch: { l: 0.680, c: 0.130, h: 255 }
+        role: "Selection, focus, UI accent"
+      lavender:
+        hex: "#9887E8"
+        oklch: { l: 0.680, c: 0.140, h: 290 }
+        role: "Variables, local bindings"
+      mauve:
+        hex: "#BF73DF"
+        oklch: { l: 0.680, c: 0.170, h: 315 }
+        role: "Keywords, control flow"
+      pink:
+        hex: "#DB6BAF"
+        oklch: { l: 0.680, c: 0.160, h: 345 }
+        role: "Operators"
+      rose:
+        hex: "#D87880"
+        oklch: { l: 0.680, c: 0.120, h: 15 }
+        role: "Decorators, annotations"
+
+  dawn:
+    display_name: "Hearth Dawn"
+
+    base:
+      crust:
+        hex: "#FAF0E5"
+        oklch: { l: 0.960, c: 0.018, h: 70 }
+        role: "Window frame, status bars"
+      mantle:
+        hex: "#EDE3D8"
+        oklch: { l: 0.920, c: 0.018, h: 70 }
+        role: "Sidebar, panel backgrounds"
+      base:
+        hex: "#DFD6CB"
+        oklch: { l: 0.880, c: 0.018, h: 70 }
+        role: "Editor background"
+      surface0:
+        hex: "#D2C9BE"
+        oklch: { l: 0.840, c: 0.018, h: 70 }
+        role: "Current line highlight"
+      surface1:
+        hex: "#C5BCB2"
+        oklch: { l: 0.800, c: 0.018, h: 70 }
+        role: "Hover states, active tabs"
+      surface2:
+        hex: "#B9AFA5"
+        oklch: { l: 0.760, c: 0.018, h: 70 }
+        role: "Borders, dividers"
+      overlay0:
+        hex: "#ACA399"
+        oklch: { l: 0.720, c: 0.018, h: 70 }
+        role: "Popup menus, tooltips"
+      overlay1:
+        hex: "#A0978D"
+        oklch: { l: 0.680, c: 0.018, h: 70 }
+        role: "Search widgets, cmd palette"
+      overlay2:
+        hex: "#938A81"
+        oklch: { l: 0.640, c: 0.018, h: 70 }
+        role: "Nested overlays"
+
+    text:
+      text:
+        hex: "#171008"
+        oklch: { l: 0.180, c: 0.020, h: 70 }
+        role: "Primary text"
+      subtext1:
+        hex: "#3A3128"
+        oklch: { l: 0.320, c: 0.020, h: 70 }
+        role: "Labels, metadata"
+      subtext0:
+        hex: "#5D5449"
+        oklch: { l: 0.450, c: 0.020, h: 70 }
+        role: "Placeholders, disabled"
+      comment:
+        hex: "#978D82"
+        oklch: { l: 0.650, c: 0.020, h: 70 }
+        role: "Code comments"
+
+    accents:
+      red:
+        hex: "#94151D"
+        oklch: { l: 0.430, c: 0.160, h: 25 }
+        role: "Errors, deletions"
+      maroon:
+        hex: "#873000"
+        oklch: { l: 0.430, c: 0.130, h: 42 }
+        role: "Diff modified"
+      peach:
+        hex: "#7B3D00"
+        oklch: { l: 0.430, c: 0.120, h: 55 }
+        role: "Properties, params (signature accent)"
+        signature: true
+      yellow:
+        hex: "#5F4F00"
+        oklch: { l: 0.430, c: 0.110, h: 95 }
+        role: "Numbers, booleans, warnings"
+      gold:
+        hex: "#5B5000"
+        oklch: { l: 0.430, c: 0.110, h: 100 }
+        role: "Enum values, special constants"
+      green:
+        hex: "#2A5E1E"
+        oklch: { l: 0.430, c: 0.110, h: 140 }
+        role: "Strings, success, additions"
+      teal:
+        hex: "#035E4D"
+        oklch: { l: 0.430, c: 0.080, h: 175 }
+        role: "Types, interfaces"
+      sky:
+        hex: "#15586A"
+        oklch: { l: 0.430, c: 0.070, h: 220 }
+        role: "self/this, info, links"
+      sapphire:
+        hex: "#005487"
+        oklch: { l: 0.430, c: 0.110, h: 245 }
+        role: "Functions, methods"
+      blue:
+        hex: "#254D90"
+        oklch: { l: 0.430, c: 0.120, h: 260 }
+        role: "Selection, focus, UI accent"
+      lavender:
+        hex: "#513F91"
+        oklch: { l: 0.430, c: 0.130, h: 290 }
+        role: "Variables, local bindings"
+      mauve:
+        hex: "#6E2E87"
+        oklch: { l: 0.430, c: 0.150, h: 315 }
+        role: "Keywords, control flow"
+      pink:
+        hex: "#7E2B60"
+        oklch: { l: 0.430, c: 0.130, h: 345 }
+        role: "Operators"
+      rose:
+        hex: "#7C3543"
+        oklch: { l: 0.430, c: 0.100, h: 10 }
         role: "Decorators, annotations"
 
   # ── Catppuccin flavors (blueprint reference palettes) ─────────────
@@ -759,6 +1234,74 @@ ansi_mapping:
     bright_magenta: "pink"
     bright_cyan: "sky"
     bright_white: "crust"
+  ember:
+    black: "base"
+    red: "red"
+    green: "green"
+    yellow: "yellow"
+    blue: "blue"
+    magenta: "mauve"
+    cyan: "teal"
+    white: "subtext1"
+    bright_black: "surface2"
+    bright_red: "maroon"
+    bright_green: "green"
+    bright_yellow: "peach"
+    bright_blue: "sapphire"
+    bright_magenta: "pink"
+    bright_cyan: "sky"
+    bright_white: "text"
+  glow:
+    black: "subtext1"
+    red: "red"
+    green: "green"
+    yellow: "yellow"
+    blue: "blue"
+    magenta: "mauve"
+    cyan: "teal"
+    white: "base"
+    bright_black: "overlay2"
+    bright_red: "maroon"
+    bright_green: "green"
+    bright_yellow: "peach"
+    bright_blue: "sapphire"
+    bright_magenta: "pink"
+    bright_cyan: "sky"
+    bright_white: "crust"
+  forge:
+    black: "base"
+    red: "red"
+    green: "green"
+    yellow: "yellow"
+    blue: "blue"
+    magenta: "mauve"
+    cyan: "teal"
+    white: "subtext1"
+    bright_black: "surface2"
+    bright_red: "maroon"
+    bright_green: "green"
+    bright_yellow: "peach"
+    bright_blue: "sapphire"
+    bright_magenta: "pink"
+    bright_cyan: "sky"
+    bright_white: "text"
+  dawn:
+    black: "subtext1"
+    red: "red"
+    green: "green"
+    yellow: "yellow"
+    blue: "blue"
+    magenta: "mauve"
+    cyan: "teal"
+    white: "base"
+    bright_black: "overlay2"
+    bright_red: "maroon"
+    bright_green: "green"
+    bright_yellow: "peach"
+    bright_blue: "sapphire"
+    bright_magenta: "pink"
+    bright_cyan: "sky"
+    bright_white: "crust"
   catppuccin_mocha:
     black: "base"
     red: "red"
@@ -844,6 +1387,23 @@ syntax_mapping:
   comment: "comment"
   error_type: "red"
   punctuation: "text"
+
+# Heading color mapping (per-variant, used by obsidian and nvim markup)
+heading_mapping:
+  default:
+    h1: "peach"
+    h2: "yellow"
+    h3: "gold"
+    h4: "green"
+    h5: "teal"
+    h6: "sapphire"
+  glow:
+    h1: "red"
+    h2: "maroon"
+    h3: "gold"
+    h4: "green"
+    h5: "teal"
+    h6: "sapphire"
 
 # Semantic UI mapping
 ui_mapping:

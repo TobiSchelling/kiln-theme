@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiln Theme Tuner</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --ui-bg: #111; --ui-fg: #ddd; --ui-muted: #888; --ui-border: #333;
+  --ui-surface: #1a1a1a; --ui-accent: #E08A50; --ui-radius: 6px;
+  --mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', 'Menlo', monospace;
+}
+html, body { height: 100%; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--ui-bg); color: var(--ui-fg);
+  display: grid; grid-template-rows: auto 1fr; height: 100vh; overflow: hidden;
+}
+
+.header {
+  display: flex; align-items: center; gap: 16px; padding: 10px 20px;
+  border-bottom: 1px solid var(--ui-border);
+}
+.header h1 { font-size: 18px; font-weight: 700; white-space: nowrap; }
+.header h1 span { color: var(--ui-accent); }
+.header select {
+  padding: 5px 10px; border-radius: var(--ui-radius); border: 1px solid var(--ui-border);
+  background: var(--ui-surface); color: var(--ui-fg); font-size: 13px;
+}
+.tab-bar { display: flex; gap: 2px; background: var(--ui-surface); border-radius: var(--ui-radius); padding: 3px; margin-left: auto; }
+.tab-bar button {
+  padding: 5px 14px; border: none; border-radius: 4px; cursor: pointer;
+  font-size: 12px; background: transparent; color: var(--ui-muted); transition: all 0.15s;
+}
+.tab-bar button.active { background: var(--ui-border); color: #fff; }
+
+.main { display: grid; grid-template-columns: 420px 1fr; overflow: hidden; }
+.sidebar { border-right: 1px solid var(--ui-border); overflow-y: auto; padding: 12px; }
+.content { overflow: auto; padding: 16px; display: flex; flex-direction: column; }
+
+/* Color rows */
+.section-title {
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--ui-muted); margin: 14px 0 6px; padding-bottom: 4px; border-bottom: 1px solid var(--ui-border);
+}
+.section-title:first-child { margin-top: 0; }
+.color-row {
+  display: grid; grid-template-columns: 22px 72px 64px 110px 1fr; gap: 4px;
+  align-items: center; padding: 2px 0; font-size: 11px;
+}
+.color-swatch { width: 18px; height: 18px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.08); }
+.color-name { font-weight: 600; font-family: var(--mono); font-size: 10px; }
+.color-hex { font-family: var(--mono); font-size: 10px; color: var(--ui-muted); }
+.color-oklch { font-family: var(--mono); font-size: 9px; color: var(--ui-muted); }
+.color-role { font-size: 9px; color: var(--ui-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Contrast section */
+.contrast-row {
+  display: flex; justify-content: space-between; align-items: center; padding: 1px 0; font-size: 11px;
+}
+.contrast-badge {
+  font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 3px; font-family: var(--mono);
+}
+.contrast-pass { background: rgba(100,200,80,0.15); color: #86BE60; }
+.contrast-fail { background: rgba(200,80,80,0.15); color: #E8665E; }
+
+/* Mapping tables */
+.map-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 8px 0; }
+.map-table th { text-align: left; padding: 4px 8px; color: var(--ui-muted); font-weight: 500; font-size: 10px; text-transform: uppercase; }
+.map-table td { padding: 4px 8px; }
+.map-table tr:hover { background: var(--ui-surface); }
+.map-swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 6px; }
+.app-name { font-size: 12px; font-weight: 600; color: var(--ui-accent); margin: 14px 0 4px; }
+.app-mapping { font-size: 11px; color: var(--ui-muted); font-family: var(--mono); padding: 1px 0; }
+.app-mapping .key { color: var(--ui-fg); }
+
+/* Mockups */
+.mockup {
+  flex: 1; border-radius: 8px; overflow: hidden; font-family: var(--mono);
+  font-size: 13px; line-height: 1.6; border: 1px solid var(--ui-border); display: grid; min-height: 0;
+}
+.mockup * { font-family: inherit; }
+
+/* LazyVim */
+.lazyvim { grid-template: "sidebar editor" 1fr "status status" 26px / 200px 1fr; }
+.lv-sidebar { grid-area: sidebar; background: var(--h-mantle); padding: 6px 0; overflow: hidden; }
+.lv-sidebar-title { font-size: 11px; color: var(--h-comment); padding: 2px 10px 6px; }
+.lv-tree-item { padding: 1px 10px 1px 14px; font-size: 12px; color: var(--h-subtext1); white-space: nowrap; }
+.lv-tree-item.folder { color: var(--h-sapphire); }
+.lv-tree-item.active { background: var(--h-surface0); color: var(--h-peach); }
+.lv-tree-item.indent1 { padding-left: 28px; }
+.lv-editor { grid-area: editor; background: var(--h-base); overflow: hidden; }
+.lv-line { display: flex; min-height: 1.6em; }
+.lv-linenum { width: 36px; text-align: right; padding-right: 10px; color: var(--h-surface2); flex-shrink: 0; }
+.lv-linenum.active { color: var(--h-peach); }
+.lv-code { flex: 1; padding-right: 12px; white-space: pre; }
+.lv-line.cursorline { background: var(--h-surface0); }
+.lv-status { grid-area: status; background: var(--h-crust); display: flex; justify-content: space-between; align-items: center; padding: 0 10px; font-size: 11px; }
+.lv-mode { background: var(--h-surface0); color: var(--h-peach); padding: 0 8px; font-weight: 700; font-size: 10px; border-radius: 2px; }
+
+/* Obsidian */
+.obsidian-mock { grid-template: "tabs tabs" 32px "osb editor" 1fr "ostatus ostatus" 22px / 180px 1fr; }
+.ob-tabs { grid-area: tabs; background: var(--h-mantle); display: flex; align-items: flex-end; padding: 0 8px; gap: 1px; }
+.ob-tab { padding: 5px 14px; font-size: 11px; color: var(--h-comment); border-radius: 4px 4px 0 0; }
+.ob-tab.active { background: var(--h-base); color: var(--h-peach); }
+.ob-sidebar-o { grid-area: osb; background: var(--h-mantle); padding: 8px 0; font-size: 12px; overflow: hidden; }
+.ob-nav-item { padding: 2px 10px; color: var(--h-subtext1); white-space: nowrap; }
+.ob-nav-item.folder { color: var(--h-sapphire); }
+.ob-nav-item.active { background: var(--h-surface1); color: var(--h-peach); }
+.ob-editor { grid-area: editor; background: var(--h-base); padding: 16px 24px; overflow: auto; color: var(--h-text); font-family: system-ui, sans-serif; font-size: 14px; line-height: 1.7; }
+.ob-editor * { font-family: inherit; }
+.ob-h1 { font-size: 26px; font-weight: 700; color: var(--h-peach); margin: 0 0 8px; }
+.ob-h2 { font-size: 20px; font-weight: 600; color: var(--h-yellow); margin: 16px 0 6px; }
+.ob-h3 { font-size: 16px; font-weight: 600; color: var(--h-gold); margin: 12px 0 4px; }
+.ob-callout { border-left: 4px solid var(--h-teal); padding: 8px 12px; border-radius: 0 4px 4px 0; margin: 10px 0; font-size: 13px; background: rgba(0,0,0,0.1); }
+.ob-callout-title { font-weight: 600; color: var(--h-teal); margin-bottom: 2px; }
+.ob-tag { background: var(--h-surface0); color: var(--h-mauve); padding: 1px 8px; border-radius: 10px; font-size: 11px; font-family: var(--mono); }
+.ob-inline-code { background: var(--h-surface0); color: var(--h-peach); padding: 1px 5px; border-radius: 3px; font-family: var(--mono); font-size: 12px; }
+.ob-link { color: var(--h-sky); text-decoration: underline; }
+.ob-codeblock { background: var(--h-surface0); padding: 10px 12px; border-radius: 4px; margin: 8px 0; font-family: var(--mono); font-size: 12px; line-height: 1.6; white-space: pre; }
+.ob-status { grid-area: ostatus; background: var(--h-crust); display: flex; justify-content: space-between; padding: 0 12px; font-size: 10px; color: var(--h-subtext1); align-items: center; }
+
+/* Terminal */
+.terminal-mock { grid-template: "pane1 pane2" 1fr "tmux tmux" 24px / 1fr 1fr; }
+.tm-pane { padding: 8px 10px; font-size: 12px; line-height: 1.5; overflow: hidden; color: var(--h-text); }
+.tm-pane1 { grid-area: pane1; background: var(--h-base); border-right: 2px solid var(--h-peach); }
+.tm-pane2 { grid-area: pane2; background: var(--h-base); border-left: 1px solid var(--h-surface2); opacity: 0.85; }
+.tm-prompt { display: flex; gap: 0; margin: 2px 0; }
+.tm-prompt-seg { padding: 0 8px; font-size: 11px; }
+.tm-prompt-char { color: var(--h-peach); font-weight: 700; padding: 0 4px; }
+.tm-ansi-grid { display: flex; gap: 2px; margin: 6px 0; }
+.tm-ansi-block { width: 28px; height: 18px; border-radius: 2px; }
+.tm-statusbar { grid-area: tmux; background: var(--h-mantle); display: flex; justify-content: space-between; padding: 0 10px; font-size: 11px; align-items: center; }
+.tm-session { background: var(--h-crust); color: var(--h-peach); padding: 0 8px; font-weight: 700; font-size: 10px; }
+.tm-window { color: var(--h-comment); padding: 0 6px; }
+.tm-window.active { color: var(--h-peach); }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--ui-border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><span>Kiln</span> Theme Tuner</h1>
+  <select id="variantSelect" onchange="loadVariant(this.value)"></select>
+  <div class="tab-bar" id="tabBar"></div>
+</div>
+
+<div class="main">
+  <div class="sidebar" id="sidebar"></div>
+  <div class="content" id="content"></div>
+</div>
+
+<script>
+const VARIANTS = [
+  'dark','light','ember','forge','dawn','glow',
+  'catppuccin_mocha','catppuccin_macchiato','catppuccin_frappe','catppuccin_latte'
+];
+const TABS = ['Mappings', 'LazyVim', 'Obsidian', 'Terminal'];
+const BASE_NAMES = ['crust','mantle','base','surface0','surface1','surface2','overlay0','overlay1','overlay2'];
+const TEXT_NAMES = ['text','subtext1','subtext0','comment'];
+const ACCENT_NAMES = ['red','maroon','peach','yellow','gold','green','teal','sky','sapphire','blue','lavender','mauve','pink','rose'];
+
+const SYNTAX_MAP = {
+  keyword:'mauve', function:'sapphire', type:'teal', property:'peach', string:'green',
+  number:'yellow', variable:'lavender', operator:'pink', decorator:'rose', self:'sky',
+  enum_value:'gold', comment:'comment', error_type:'red', punctuation:'subtext0'
+};
+const UI_MAP = {
+  error:'red', warning:'yellow', info:'sky', success:'green',
+  diff_added:'green', diff_removed:'red', diff_modified:'maroon',
+  selection:'blue', search_match:'yellow', link:'sky', inline_code:'peach'
+};
+const ANSI_MAP = {
+  '0 black':'base','1 red':'red','2 green':'green','3 yellow':'yellow',
+  '4 blue':'blue','5 magenta':'mauve','6 cyan':'teal','7 white':'subtext1',
+  '8 br.black':'surface2','9 br.red':'maroon','10 br.green':'green','11 br.yellow':'peach',
+  '12 br.blue':'sapphire','13 br.magenta':'pink','14 br.cyan':'sky','15 br.white':'text'
+};
+const APP_USAGE = {
+  ghostty: {background:'base',foreground:'text','cursor-color':'peach','selection-bg':'surface1','split-divider':'surface2','palette[0-15]':'ANSI mapping'},
+  fish: {fish_color_normal:'text',fish_color_command:'sapphire',fish_color_keyword:'mauve',fish_color_param:'peach',fish_color_quote:'green',fish_color_comment:'comment',fish_color_error:'red',fish_color_operator:'pink'},
+  tide: {character:'peach',character_failure:'red',pwd_anchors:'peach',pwd_dirs:'subtext1',git_branch:'sapphire',git_dirty:'yellow',git_staged:'green',git_conflicted:'red',status_ok:'green',status_fail:'red'},
+  nvim: {Normal:'text on base',CursorLine:'surface0 bg',CursorLineNr:'peach',StatusLine:'subtext1 on mantle','@keyword':'mauve','@function':'sapphire','@type':'teal','@property':'peach','@string':'green','@number':'yellow','@variable':'lavender','@comment':'comment','@operator':'pink','@attribute':'rose','@constant':'gold'},
+  tmux: {'status bg':'mantle','status fg':'subtext1','session name':'peach on crust','active window':'peach','pane border':'surface2','active border':'peach','clock':'sapphire'},
+  obsidian: {'h1-color':'peach','h2-color':'yellow','h3-color':'gold','h4-color':'green','h5-color':'teal','h6-color':'sapphire','code-normal':'peach','code-keyword':'mauve','code-function':'sapphire','code-string':'green','tag-color':'mauve','link-color':'sky','callout-tip':'teal','callout-warning':'yellow'},
+  vscode: {'editor.background':'base','editor.foreground':'text',editorCursor:'peach','tab.activeForeground':'peach','terminal.ansi*':'ANSI mapping','tokenColors keyword':'mauve','tokenColors function':'sapphire','tokenColors type':'teal','tokenColors string':'green'},
+  delta: {'minus-style':'red','plus-style':'green','hunk-header':'peach','file-style':'sapphire','line-numbers-zero':'comment','blame-palette':'base mantle crust surface0'}
+};
+
+let currentVariant = 'ember';
+let currentTab = 0;
+let palette = null;
+
+function luminance(hex) {
+  hex = hex.replace('#','');
+  const [r,g,b] = [0,2,4].map(i => { let c = parseInt(hex.substring(i,i+2),16)/255; return c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4); });
+  return 0.2126*r + 0.7152*g + 0.0722*b;
+}
+function contrastRatio(a,b) { const l1=luminance(a),l2=luminance(b); return (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05); }
+
+async function loadVariant(name) {
+  currentVariant = name;
+  try {
+    const resp = await fetch(`../dist/web/${name}/tokens.json`);
+    palette = await resp.json();
+  } catch(e) {
+    palette = null;
+    document.getElementById('sidebar').innerHTML = '';
+    document.getElementById('content').innerHTML = `<p style="color:var(--ui-muted);padding:20px">Could not load <code>dist/web/${name}/tokens.json</code><br>Run <code>python -m kiln.generate --variant ${name}</code></p>`;
+    return;
+  }
+  renderAll();
+}
+
+function applyCssVars(el) {
+  if (!palette) return;
+  Object.entries(palette.colors).forEach(([n,d]) => el.style.setProperty('--h-'+n, d.hex));
+}
+
+function renderAll() { renderTabs(); renderSidebar(); renderContent(); }
+function renderTabs() {
+  document.getElementById('tabBar').innerHTML = TABS.map((n,i) =>
+    `<button class="${i===currentTab?'active':''}" onclick="switchTab(${i})">${n}</button>`
+  ).join('');
+}
+function switchTab(i) { currentTab = i; renderAll(); }
+
+function renderSidebar() {
+  const el = document.getElementById('sidebar');
+  if (!palette) { el.innerHTML = ''; return; }
+  const c = palette.colors;
+  const bg = c.base.hex;
+
+  function colorRow(name) {
+    const d = c[name];
+    const oklch = d.oklch ? `L${d.oklch.l.toFixed(2)} C${d.oklch.c.toFixed(3)} H${d.oklch.h}` : '';
+    // Find syntax/UI usages
+    const usages = [];
+    Object.entries(SYNTAX_MAP).forEach(([r,col]) => { if(col===name) usages.push(r); });
+    Object.entries(UI_MAP).forEach(([r,col]) => { if(col===name) usages.push(r); });
+    const roleText = usages.length ? usages.join(', ') : (d.role || '');
+    return `<div class="color-row">
+      <div class="color-swatch" style="background:${d.hex}"></div>
+      <span class="color-name">${name}</span>
+      <span class="color-hex">${d.hex}</span>
+      <span class="color-oklch">${oklch}</span>
+      <span class="color-role" title="${d.role}${usages.length ? ' | '+usages.join(', ') : ''}">${roleText}</span>
+    </div>`;
+  }
+
+  let html = `<div class="section-title">Base & Surface (9)</div>`;
+  html += BASE_NAMES.map(colorRow).join('');
+  html += `<div class="section-title">Text (4)</div>`;
+  html += TEXT_NAMES.map(colorRow).join('');
+  html += `<div class="section-title">Accents (14)</div>`;
+  html += ACCENT_NAMES.map(colorRow).join('');
+
+  // Contrast
+  html += `<div class="section-title">Contrast vs base (${bg})</div>`;
+  [...TEXT_NAMES, ...ACCENT_NAMES].forEach(name => {
+    const hex = c[name].hex;
+    const ratio = contrastRatio(hex, bg);
+    const pass = name==='comment' ? ratio>=3 : ratio>=4.5;
+    html += `<div class="contrast-row">
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${hex};vertical-align:middle;margin-right:4px"></span>${name}</span>
+      <span class="contrast-badge ${pass?'contrast-pass':'contrast-fail'}">${ratio.toFixed(1)}:1</span>
+    </div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+function renderContent() {
+  const el = document.getElementById('content');
+  if (!palette) return;
+  const c = palette.colors;
+  if (currentTab===0) el.innerHTML = renderMappings(c);
+  else if (currentTab===1) el.innerHTML = renderLazyVim();
+  else if (currentTab===2) el.innerHTML = renderObsidian();
+  else el.innerHTML = renderTerminal();
+  applyCssVars(el);
+}
+
+function renderMappings(c) {
+  let h = '';
+  function mapTable(title, map) {
+    h += `<div class="section-title">${title}</div><table class="map-table"><tr><th>Role</th><th>Color</th><th>Hex</th><th>OKLCH</th></tr>`;
+    Object.entries(map).forEach(([role,name]) => {
+      const d = c[name];
+      const hex = d?.hex||'#000';
+      const oklch = d?.oklch ? `${d.oklch.l.toFixed(2)} ${d.oklch.c.toFixed(3)} ${d.oklch.h}` : '';
+      h += `<tr><td>${role}</td><td><span class="map-swatch" style="background:${hex}"></span>${name}</td><td style="font-family:var(--mono);font-size:10px;color:var(--ui-muted)">${hex}</td><td style="font-family:var(--mono);font-size:9px;color:var(--ui-muted)">${oklch}</td></tr>`;
+    });
+    h += '</table>';
+  }
+  mapTable('Syntax Mapping', SYNTAX_MAP);
+  mapTable('UI Mapping', UI_MAP);
+  mapTable('ANSI Terminal Colors', ANSI_MAP);
+
+  h += `<div class="section-title">Per-Application Usage</div>`;
+  Object.entries(APP_USAGE).forEach(([app,mapping]) => {
+    h += `<div class="app-name">${app}</div>`;
+    Object.entries(mapping).forEach(([key,colorName]) => {
+      const d = c[colorName];
+      const swatch = d ? `<span class="map-swatch" style="background:${d.hex}"></span>` : '';
+      h += `<div class="app-mapping"><span class="key">${key}</span> = ${swatch}${colorName}${d ? ' '+d.hex : ''}</div>`;
+    });
+  });
+  return h;
+}
+
+function renderLazyVim() {
+  return `<div class="mockup lazyvim">
+  <div class="lv-sidebar"><div class="lv-sidebar-title">Neo-tree</div>
+    <div class="lv-tree-item folder">&#x25BC; src/</div>
+    <div class="lv-tree-item indent1 active">main.ts</div><div class="lv-tree-item indent1">utils.ts</div><div class="lv-tree-item indent1">types.ts</div>
+    <div class="lv-tree-item folder">&#x25BC; tests/</div><div class="lv-tree-item indent1">main.test.ts</div>
+    <div class="lv-tree-item">README.md</div><div class="lv-tree-item">palette.yaml</div></div>
+  <div class="lv-editor">
+    <div class="lv-line"><span class="lv-linenum">1</span><span class="lv-code" style="color:var(--h-comment)">/**</span></div>
+    <div class="lv-line"><span class="lv-linenum">2</span><span class="lv-code" style="color:var(--h-comment)"> * Theme palette loader.</span></div>
+    <div class="lv-line"><span class="lv-linenum">3</span><span class="lv-code" style="color:var(--h-comment)"> */</span></div>
+    <div class="lv-line"><span class="lv-linenum">4</span><span class="lv-code"><span style="color:var(--h-mauve)">import</span> { <span style="color:var(--h-sapphire)">readFileSync</span> } <span style="color:var(--h-mauve)">from</span> <span style="color:var(--h-green)">"node:fs"</span>;</span></div>
+    <div class="lv-line"><span class="lv-linenum">5</span><span class="lv-code"></span></div>
+    <div class="lv-line"><span class="lv-linenum">6</span><span class="lv-code"><span style="color:var(--h-mauve)">interface</span> <span style="color:var(--h-teal)">PaletteConfig</span> {</span></div>
+    <div class="lv-line cursorline"><span class="lv-linenum active">7</span><span class="lv-code">  <span style="color:var(--h-peach)">name</span>: <span style="color:var(--h-teal)">string</span>;</span></div>
+    <div class="lv-line"><span class="lv-linenum">8</span><span class="lv-code">  <span style="color:var(--h-peach)">variant</span>: <span style="color:var(--h-green)">"dark"</span> <span style="color:var(--h-pink)">|</span> <span style="color:var(--h-green)">"light"</span>;</span></div>
+    <div class="lv-line"><span class="lv-linenum">9</span><span class="lv-code">}</span></div>
+    <div class="lv-line"><span class="lv-linenum">10</span><span class="lv-code"></span></div>
+    <div class="lv-line"><span class="lv-linenum">11</span><span class="lv-code"><span style="color:var(--h-mauve)">const</span> <span style="color:var(--h-gold)">MAX_CHROMA</span> <span style="color:var(--h-pink)">=</span> <span style="color:var(--h-yellow)">0.25</span>;</span></div>
+    <div class="lv-line"><span class="lv-linenum">12</span><span class="lv-code"></span></div>
+    <div class="lv-line"><span class="lv-linenum">13</span><span class="lv-code"><span style="color:var(--h-mauve)">export function</span> <span style="color:var(--h-sapphire)">loadPalette</span>(</span></div>
+    <div class="lv-line"><span class="lv-linenum">14</span><span class="lv-code">  <span style="color:var(--h-peach)">config</span>: <span style="color:var(--h-teal)">PaletteConfig</span>,</span></div>
+    <div class="lv-line"><span class="lv-linenum">15</span><span class="lv-code">): <span style="color:var(--h-teal)">Map</span>&lt;<span style="color:var(--h-teal)">string</span>, <span style="color:var(--h-teal)">string</span>&gt; {</span></div>
+    <div class="lv-line"><span class="lv-linenum">16</span><span class="lv-code">  <span style="color:var(--h-mauve)">const</span> <span style="color:var(--h-lavender)">palette</span> <span style="color:var(--h-pink)">=</span> <span style="color:var(--h-mauve)">new</span> <span style="color:var(--h-teal)">Map</span>();</span></div>
+    <div class="lv-line"><span class="lv-linenum">17</span><span class="lv-code">  <span style="color:var(--h-comment)">// Resolve all color references</span></span></div>
+    <div class="lv-line"><span class="lv-linenum">18</span><span class="lv-code">  <span style="color:var(--h-mauve)">for</span> (<span style="color:var(--h-mauve)">const</span> [<span style="color:var(--h-lavender)">key</span>, <span style="color:var(--h-lavender)">val</span>] <span style="color:var(--h-mauve)">of</span> <span style="color:var(--h-sky)">this</span>.<span style="color:var(--h-peach)">entries</span>) {</span></div>
+    <div class="lv-line"><span class="lv-linenum">19</span><span class="lv-code">    <span style="color:var(--h-lavender)">palette</span>.<span style="color:var(--h-sapphire)">set</span>(<span style="color:var(--h-lavender)">key</span>, <span style="color:var(--h-lavender)">val</span>);</span></div>
+    <div class="lv-line"><span class="lv-linenum">20</span><span class="lv-code">  }</span></div>
+    <div class="lv-line"><span class="lv-linenum">21</span><span class="lv-code">  <span style="color:var(--h-mauve)">return</span> <span style="color:var(--h-lavender)">palette</span>;</span></div>
+    <div class="lv-line"><span class="lv-linenum">22</span><span class="lv-code">}</span></div>
+  </div>
+  <div class="lv-status">
+    <div style="display:flex;gap:12px;align-items:center"><span class="lv-mode">NORMAL</span><span style="color:var(--h-subtext1)">main.ts</span></div>
+    <div style="display:flex;gap:12px;align-items:center"><span style="color:var(--h-sapphire)">main</span><span style="color:var(--h-comment)">Ln 7</span></div>
+  </div></div>`;
+}
+
+function renderObsidian() {
+  return `<div class="mockup obsidian-mock">
+  <div class="ob-tabs"><div class="ob-tab active">Project Notes</div><div class="ob-tab">Daily Log</div></div>
+  <div class="ob-sidebar-o">
+    <div class="ob-nav-item folder">&#x25BC; docs/</div>
+    <div class="ob-nav-item active" style="padding-left:24px">Project Notes</div>
+    <div class="ob-nav-item" style="padding-left:24px">Architecture</div>
+    <div class="ob-nav-item folder">&#x25BC; daily/</div>
+    <div class="ob-nav-item">README</div></div>
+  <div class="ob-editor">
+    <div class="ob-h1">Project Notes</div>
+    <div class="ob-h2">Architecture</div>
+    <p>The theme engine uses <span class="ob-inline-code">palette.yaml</span> as the source of truth. Colors defined in <span class="ob-link">OKLCH color space</span>.</p>
+    <div class="ob-h3">Color System</div>
+    <div class="ob-callout"><div class="ob-callout-title">Tip</div>Use OKLCH for perceptual uniformity across accent colors.</div>
+    <p style="margin-top:8px">Tags: <span class="ob-tag">#theme</span> <span class="ob-tag">#oklch</span></p>
+    <div class="ob-codeblock"><span style="color:var(--h-mauve)">def</span> <span style="color:var(--h-sapphire)">load</span>(<span style="color:var(--h-peach)">path</span>: <span style="color:var(--h-teal)">str</span>):
+    <span style="color:var(--h-comment)"># Load palette</span>
+    <span style="color:var(--h-mauve)">return</span> <span style="color:var(--h-sapphire)">yaml.safe_load</span>(<span style="color:var(--h-lavender)">path</span>)</div>
+  </div>
+  <div class="ob-status"><span>1,234 words</span><span>2 backlinks</span></div></div>`;
+}
+
+function renderTerminal() {
+  const ad=['base','red','green','yellow','blue','mauve','teal','subtext1'];
+  const ab=['surface2','maroon','green','peach','sapphire','pink','sky','text'];
+  return `<div class="mockup terminal-mock">
+  <div class="tm-pane tm-pane1">
+    <div class="tm-prompt">
+      <span class="tm-prompt-seg" style="background:var(--h-surface1);color:var(--h-subtext1)">~/projects</span>
+      <span class="tm-prompt-seg" style="background:var(--h-surface1);color:var(--h-sapphire)">main</span></div>
+    <div><span class="tm-prompt-char">&#x276F;</span> <span style="color:var(--h-sapphire)">rg</span> <span style="color:var(--h-green)">"peach"</span> <span style="color:var(--h-peach)">palette.yaml</span></div>
+    <div><span style="color:var(--h-yellow)">84</span><span style="color:var(--h-comment)">:</span>      <span style="color:var(--h-red)">peach</span>:</div>
+    <div><span style="color:var(--h-yellow)">85</span><span style="color:var(--h-comment)">:</span>        hex: <span style="color:var(--h-green)">"#E08A50"</span></div>
+    <div style="margin-top:8px;font-size:11px;color:var(--h-comment)">ANSI 16:</div>
+    <div class="tm-ansi-grid">${ad.map(n=>`<div class="tm-ansi-block" style="background:var(--h-${n})"></div>`).join('')}</div>
+    <div class="tm-ansi-grid">${ab.map(n=>`<div class="tm-ansi-block" style="background:var(--h-${n})"></div>`).join('')}</div></div>
+  <div class="tm-pane tm-pane2">
+    <div><span style="color:var(--h-sapphire)">$</span> <span style="color:var(--h-sapphire)">git</span> <span style="color:var(--h-peach)">log</span> <span style="color:var(--h-comment)">--oneline -4</span></div>
+    <div><span style="color:var(--h-yellow)">c42cdf0</span> <span style="color:var(--h-text)">Add Catppuccin flavors</span></div>
+    <div><span style="color:var(--h-yellow)">3221d4e</span> <span style="color:var(--h-text)">Fetch blueprint examples</span></div>
+    <div><span style="color:var(--h-yellow)">f0801bf</span> <span style="color:var(--h-text)">Add theme blueprints</span></div>
+    <div><span style="color:var(--h-yellow)">cd8aecf</span> <span style="color:var(--h-text)">Document installation</span></div></div>
+  <div class="tm-statusbar">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="tm-session">kiln</span><span class="tm-window active">1:bash</span><span class="tm-window">2:nvim</span></div>
+    <div style="color:var(--h-subtext1)"><span style="color:var(--h-comment)">2026-04-02</span> 10:42</div></div></div>`;
+}
+
+// Init
+(function(){
+  const sel = document.getElementById('variantSelect');
+  sel.innerHTML = VARIANTS.map(v => `<option value="${v}" ${v===currentVariant?'selected':''}>${v}</option>`).join('');
+  loadVariant(currentVariant);
+})();
+</script>
+</body>
+</html>
