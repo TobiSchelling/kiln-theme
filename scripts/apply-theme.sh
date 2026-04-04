@@ -176,15 +176,25 @@ apply_tide() {
 apply_nvim() {
   local src="$DIST/nvim/$VARIANT/kiln.lua"
   local dest="$HOME/.config/nvim/colors/kiln-$VARIANT.lua"
+  local lualine_src="$DIST/nvim/$VARIANT/lualine.lua"
+  local lualine_dest="$HOME/.config/nvim/lua/lualine/themes/kiln-$VARIANT.lua"
 
   if $DRY_RUN; then
     skip "nvim: would copy $src → $dest"
+    skip "nvim: would copy $lualine_src → $lualine_dest"
     return
   fi
 
   mkdir -p "$(dirname "$dest")"
   cp "$src" "$dest"
   info "nvim: installed colorscheme to $dest"
+
+  if [ -f "$lualine_src" ]; then
+    mkdir -p "$(dirname "$lualine_dest")"
+    cp "$lualine_src" "$lualine_dest"
+    info "nvim: installed lualine theme to $lualine_dest"
+  fi
+
   warn "nvim: run :colorscheme kiln-$VARIANT to activate"
 }
 

@@ -1,6 +1,6 @@
 [project]
 name = "kiln-theme"
-version = "1.0.0"
+version = "1.0.1"
 description = "Kiln — a warm clarity color theme for terminals, editors, and apps"
 readme = "README.md"
 requires-python = ">=3.11"

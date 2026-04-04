@@ -7,7 +7,7 @@
 #                180=teal, 220=blue, 270=purple, 330=magenta
 
 name: kiln
-version: "1.0.0"
+version: "1.0.1"
 author: Tobias
 
 variants:
@@ -85,12 +85,12 @@ variants:
         role: "Properties, params (signature accent)"
         signature: true
       yellow:
-        hex: "#B48700"
-        oklch: { l: 0.650, c: 0.150, h: 85 }
+        hex: "#BA8400"
+        oklch: { l: 0.650, c: 0.150, h: 80 }
         role: "Numbers, booleans, warnings"
       gold:
-        hex: "#AE8A0D"
-        oklch: { l: 0.650, c: 0.130, h: 90 }
+        hex: "#9F9037"
+        oklch: { l: 0.650, c: 0.110, h: 100 }
         role: "Enum values, special constants"
       green:
         hex: "#68A244"
@@ -203,12 +203,12 @@ variants:
         role: "Properties, params (signature accent)"
         signature: true
       yellow:
-        hex: "#7D6700"
-        oklch: { l: 0.520, c: 0.110, h: 95 }
+        hex: "#856300"
+        oklch: { l: 0.520, c: 0.140, h: 85 }
         role: "Numbers, booleans, warnings"
       gold:
-        hex: "#786900"
-        oklch: { l: 0.520, c: 0.110, h: 100 }
+        hex: "#6E6D28"
+        oklch: { l: 0.520, c: 0.090, h: 108 }
         role: "Enum values, special constants"
       green:
         hex: "#227E00"
@@ -321,12 +321,12 @@ variants:
         role: "Properties, params (signature accent)"
         signature: true
       yellow:
-        hex: "#BF9000"
-        oklch: { l: 0.680, c: 0.150, h: 85 }
+        hex: "#C58D00"
+        oklch: { l: 0.680, c: 0.150, h: 80 }
         role: "Numbers, booleans, warnings"
       gold:
-        hex: "#B79420"
-        oklch: { l: 0.680, c: 0.130, h: 90 }
+        hex: "#A89A42"
+        oklch: { l: 0.680, c: 0.110, h: 100 }
         role: "Enum values, special constants"
       green:
         hex: "#71AB4D"
@@ -439,12 +439,12 @@ variants:
         role: "Properties, params (signature accent)"
         signature: true
       yellow:
-        hex: "#5F4F00"
-        oklch: { l: 0.430, c: 0.110, h: 95 }
+        hex: "#664B00"
+        oklch: { l: 0.430, c: 0.140, h: 85 }
         role: "Numbers, booleans, warnings"
       gold:
-        hex: "#5B5000"
-        oklch: { l: 0.430, c: 0.110, h: 100 }
+        hex: "#555306"
+        oklch: { l: 0.430, c: 0.090, h: 108 }
         role: "Enum values, special constants"
       green:
         hex: "#2A5E1E"
