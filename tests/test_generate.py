@@ -23,7 +23,7 @@ def test_build_context_ember():
     assert "peach" in ctx["colors"]
     assert ctx["colors"]["peach"]["hex"] == "#D3721E"
     assert ctx["colors"]["peach"]["hex_stripped"] == "D3721E"
-    assert ctx["colors"]["base"]["hex"] == "#090502"
+    assert ctx["colors"]["base"]["hex"] == "#0B0501"
     assert ctx["colors"]["text"]["hex"] == "#FBF4ED"
 
 
