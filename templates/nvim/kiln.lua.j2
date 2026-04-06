@@ -18,10 +18,11 @@ local p = {
 }
 
 local highlights = {
-  -- Editor UI
+  -- ── Editor UI ───────────────────────────────────────────────────
   Normal       = { fg = p.text, bg = p.base },
   NormalFloat  = { fg = p.text, bg = p.mantle },
   FloatBorder  = { fg = p.surface2, bg = p.mantle },
+  FloatTitle   = { fg = p.peach, bold = true },
   CursorLine   = { bg = p.surface0 },
   CursorLineNr = { fg = p.peach, bold = true },
   LineNr       = { fg = p.surface2 },
@@ -32,6 +33,7 @@ local highlights = {
   Search       = { fg = p.crust, bg = p.yellow },
   IncSearch    = { fg = p.crust, bg = p.peach },
   CurSearch    = { fg = p.crust, bg = p.peach, bold = true },
+  Substitute   = { fg = p.crust, bg = p.peach },
   Pmenu        = { fg = p.text, bg = p.overlay0 },
   PmenuSel     = { fg = p.text, bg = p.surface1, bold = true },
   PmenuSbar    = { bg = p.overlay0 },
@@ -42,6 +44,8 @@ local highlights = {
   TabLineFill  = { bg = p.crust },
   TabLineSel   = { fg = p.peach, bg = p.surface0, bold = true },
   WinSeparator = { fg = p.surface2 },
+  WinBar       = { fg = p.subtext1, bg = p.base },
+  WinBarNC     = { fg = p.comment, bg = p.base },
   Folded       = { fg = p.comment, bg = p.surface0 },
   FoldColumn   = { fg = p.surface2 },
   MatchParen   = { fg = p.peach, bold = true, underline = true },
@@ -51,29 +55,62 @@ local highlights = {
   Directory    = { fg = p.sapphire },
   Title        = { fg = p.peach, bold = true },
   Conceal      = { fg = p.overlay2 },
+  Cursor       = { fg = p.crust, bg = p.text },
+  lCursor      = { fg = p.crust, bg = p.text },
+  CursorIM     = { fg = p.crust, bg = p.text },
+  TermCursor   = { fg = p.crust, bg = p.text },
+  ModeMsg      = { fg = p.text, bold = true },
+  MoreMsg      = { fg = p.sapphire },
+  Question     = { fg = p.sapphire },
+  WarningMsg   = { fg = p.yellow },
+  ErrorMsg     = { fg = p.red, bold = true },
+  WildMenu     = { fg = p.crust, bg = p.peach },
+  SpellBad     = { undercurl = true, sp = p.red },
+  SpellCap     = { undercurl = true, sp = p.yellow },
+  SpellLocal   = { undercurl = true, sp = p.sky },
+  SpellRare    = { undercurl = true, sp = p.teal },
 
-  -- Diagnostics
-  DiagnosticError      = { fg = p.red },
-  DiagnosticWarn       = { fg = p.yellow },
-  DiagnosticInfo       = { fg = p.sky },
-  DiagnosticHint       = { fg = p.teal },
+  -- ── Diagnostics ─────────────────────────────────────────────────
+  DiagnosticError          = { fg = p.red },
+  DiagnosticWarn           = { fg = p.yellow },
+  DiagnosticInfo           = { fg = p.sky },
+  DiagnosticHint           = { fg = p.teal },
+  DiagnosticOk             = { fg = p.green },
   DiagnosticUnderlineError = { undercurl = true, sp = p.red },
   DiagnosticUnderlineWarn  = { undercurl = true, sp = p.yellow },
   DiagnosticUnderlineInfo  = { undercurl = true, sp = p.sky },
   DiagnosticUnderlineHint  = { undercurl = true, sp = p.teal },
+  DiagnosticUnderlineOk    = { undercurl = true, sp = p.green },
+  DiagnosticVirtualTextError = { fg = p.red, bg = p.surface0 },
+  DiagnosticVirtualTextWarn  = { fg = p.yellow, bg = p.surface0 },
+  DiagnosticVirtualTextInfo  = { fg = p.sky, bg = p.surface0 },
+  DiagnosticVirtualTextHint  = { fg = p.teal, bg = p.surface0 },
+  DiagnosticVirtualTextOk    = { fg = p.green, bg = p.surface0 },
 
-  -- Diff
+  -- ── Diff ────────────────────────────────────────────────────────
   DiffAdd    = { bg = p.green, fg = p.crust },
   DiffChange = { bg = p.maroon, fg = p.crust },
   DiffDelete = { bg = p.red, fg = p.crust },
   DiffText   = { bg = p.yellow, fg = p.crust, bold = true },
 
-  -- Git signs
-  GitSignsAdd    = { fg = p.green },
-  GitSignsChange = { fg = p.maroon },
-  GitSignsDelete = { fg = p.red },
+  -- ── Git signs ───────────────────────────────────────────────────
+  GitSignsAdd              = { fg = p.green },
+  GitSignsChange           = { fg = p.maroon },
+  GitSignsDelete           = { fg = p.red },
+  GitSignsCurrentLineBlame = { fg = p.comment },
+  GitSignsAddPreview       = { fg = p.green, bg = p.surface0 },
+  GitSignsDeletePreview    = { fg = p.red, bg = p.surface0 },
+  GitSignsAddInline        = { bg = p.surface1 },
+  GitSignsChangeInline     = { bg = p.surface1 },
+  GitSignsDeleteInline     = { bg = p.surface1 },
+  GitSignsDeleteVirtLn     = { fg = p.red },
 
-  -- Treesitter
+  -- Lualine diff (fg used by statusline diff component)
+  LuaLineDiffAdd    = { fg = p.green },
+  LuaLineDiffChange = { fg = p.maroon },
+  LuaLineDiffDelete = { fg = p.red },
+
+  -- ── Treesitter ──────────────────────────────────────────────────
   ["@keyword"]              = { fg = p.mauve },
   ["@keyword.return"]       = { fg = p.mauve },
   ["@keyword.function"]     = { fg = p.mauve },
@@ -142,7 +179,7 @@ local highlights = {
   ["@markup.raw"]           = { fg = p.peach },
   ["@markup.list"]          = { fg = p.pink },
 
-  -- LSP semantic tokens
+  -- ── LSP semantic tokens ─────────────────────────────────────────
   ["@lsp.type.class"]         = { fg = p.teal },
   ["@lsp.type.decorator"]     = { fg = p.rose },
   ["@lsp.type.enum"]          = { fg = p.teal },
@@ -158,7 +195,21 @@ local highlights = {
   ["@lsp.type.typeParameter"] = { fg = p.teal },
   ["@lsp.type.variable"]      = { fg = p.lavender },
 
-  -- Telescope
+  -- ── LSP extended ────────────────────────────────────────────────
+  LspReferenceText  = { bg = p.surface1 },
+  LspReferenceRead  = { bg = p.surface1 },
+  LspReferenceWrite = { bg = p.surface1, bold = true },
+  LspInlayHint      = { fg = p.comment, bg = p.surface0, italic = true },
+  LspCodeLens       = { fg = p.comment, italic = true },
+  LspCodeLensSeparator        = { fg = p.surface2 },
+  LspSignatureActiveParameter = { fg = p.peach, bold = true },
+
+  -- ── TreeSitter context ──────────────────────────────────────────
+  TreesitterContext           = { bg = p.mantle },
+  TreesitterContextBottom     = { sp = p.surface2, underline = true },
+  TreesitterContextLineNumber = { fg = p.surface1, bg = p.mantle },
+
+  -- ── Telescope ───────────────────────────────────────────────────
   TelescopeNormal       = { fg = p.text, bg = p.mantle },
   TelescopeBorder       = { fg = p.surface2, bg = p.mantle },
   TelescopePromptNormal = { fg = p.text, bg = p.surface0 },
@@ -167,17 +218,17 @@ local highlights = {
   TelescopeSelection    = { bg = p.surface0 },
   TelescopeMatching     = { fg = p.peach, bold = true },
 
-  -- Which-key
+  -- ── Which-key ───────────────────────────────────────────────────
   WhichKey          = { fg = p.peach },
   WhichKeyDesc      = { fg = p.text },
   WhichKeyGroup     = { fg = p.sapphire },
   WhichKeySeparator = { fg = p.comment },
 
-  -- Indent blankline
+  -- ── Indent blankline ────────────────────────────────────────────
   IblIndent = { fg = p.surface1 },
   IblScope  = { fg = p.surface2 },
 
-  -- Lazy.nvim plugin manager
+  -- ── Lazy.nvim plugin manager ────────────────────────────────────
   LazyH1           = { fg = p.crust, bg = p.peach, bold = true },
   LazyH2           = { fg = p.peach, bold = true },
   LazyButton       = { fg = p.text, bg = p.surface0 },
@@ -201,7 +252,7 @@ local highlights = {
   LazyUrl          = { fg = p.sky, underline = true },
   LazyValue        = { fg = p.green },
 
-  -- Snacks dashboard (LazyVim default)
+  -- ── Snacks dashboard ────────────────────────────────────────────
   SnacksDashboardHeader  = { fg = p.peach },
   SnacksDashboardDesc    = { fg = p.subtext1 },
   SnacksDashboardIcon    = { fg = p.peach },
@@ -210,13 +261,53 @@ local highlights = {
   SnacksDashboardSpecial = { fg = p.peach },
   SnacksDashboardDir     = { fg = p.comment },
 
-  -- Snacks UI
-  SnacksNormal       = { fg = p.text, bg = p.mantle },
-  SnacksNotifierInfo  = { fg = p.sky },
-  SnacksNotifierWarn  = { fg = p.yellow },
-  SnacksNotifierError = { fg = p.red },
+  -- ── Snacks UI ───────────────────────────────────────────────────
+  SnacksNormal   = { fg = p.text, bg = p.mantle },
+  SnacksNormalNC = { fg = p.text, bg = p.mantle },
+  SnacksWinBar   = { fg = p.peach, bold = true },
+  SnacksWinBarNC = { fg = p.comment },
+  SnacksBackdrop = { bg = p.crust },
 
-  -- Neo-tree
+  -- Snacks notifier
+  SnacksNotifierInfo        = { fg = p.sky },
+  SnacksNotifierWarn        = { fg = p.yellow },
+  SnacksNotifierError       = { fg = p.red },
+  SnacksNotifierDebug       = { fg = p.peach },
+  SnacksNotifierTrace       = { fg = p.rose },
+  SnacksNotifierIconInfo    = { fg = p.sky },
+  SnacksNotifierIconWarn    = { fg = p.yellow },
+  SnacksNotifierIconError   = { fg = p.red },
+  SnacksNotifierIconDebug   = { fg = p.peach },
+  SnacksNotifierIconTrace   = { fg = p.rose },
+  SnacksNotifierTitleInfo   = { fg = p.sky },
+  SnacksNotifierTitleWarn   = { fg = p.yellow },
+  SnacksNotifierTitleError  = { fg = p.red },
+  SnacksNotifierTitleDebug  = { fg = p.peach },
+  SnacksNotifierTitleTrace  = { fg = p.rose },
+  SnacksNotifierBorderInfo  = { fg = p.sky },
+  SnacksNotifierBorderWarn  = { fg = p.yellow },
+  SnacksNotifierBorderError = { fg = p.red },
+  SnacksNotifierBorderDebug = { fg = p.peach },
+  SnacksNotifierBorderTrace = { fg = p.rose },
+
+  -- Snacks indent
+  SnacksIndent      = { fg = p.surface1 },
+  SnacksIndentScope = { fg = p.surface2 },
+
+  -- Snacks picker
+  SnacksPicker             = { fg = p.text, bg = p.mantle },
+  SnacksPickerBorder       = { fg = p.surface2, bg = p.mantle },
+  SnacksPickerInput        = { fg = p.text, bg = p.surface0 },
+  SnacksPickerInputBorder  = { fg = p.surface2, bg = p.surface0 },
+  SnacksPickerSelected     = { fg = p.text, bg = p.surface0, bold = true },
+  SnacksPickerMatch        = { fg = p.peach, bold = true },
+  SnacksPickerPrompt       = { fg = p.peach },
+  SnacksPickerTitle        = { fg = p.crust, bg = p.mauve, bold = true },
+  SnacksPickerPreviewTitle = { fg = p.crust, bg = p.green, bold = true },
+  SnacksPickerInputTitle   = { fg = p.crust, bg = p.peach, bold = true },
+  SnacksPickerListTitle    = { fg = p.crust, bg = p.lavender, bold = true },
+
+  -- ── Neo-tree ────────────────────────────────────────────────────
   NeoTreeNormal         = { fg = p.text, bg = p.mantle },
   NeoTreeNormalNC       = { fg = p.text, bg = p.mantle },
   NeoTreeDirectoryIcon  = { fg = p.sapphire },
@@ -230,30 +321,200 @@ local highlights = {
   NeoTreeIndentMarker   = { fg = p.surface2 },
   NeoTreeWinSeparator   = { fg = p.surface2, bg = p.mantle },
 
-  -- Noice (command line UI)
-  NoiceCmdline         = { fg = p.text, bg = p.surface0 },
-  NoiceCmdlineIcon     = { fg = p.peach },
-  NoiceCmdlinePopup    = { fg = p.text, bg = p.surface0 },
+  -- ── Noice ───────────────────────────────────────────────────────
+  NoiceCmdline            = { fg = p.text, bg = p.surface0 },
+  NoiceCmdlineIcon        = { fg = p.peach },
+  NoiceCmdlineIconSearch  = { fg = p.yellow },
+  NoiceCmdlinePopup       = { fg = p.text, bg = p.surface0 },
   NoiceCmdlinePopupBorder = { fg = p.surface2 },
-  NoiceConfirm         = { fg = p.text, bg = p.surface0 },
-  NoiceMini            = { fg = p.text, bg = p.surface0 },
+  NoiceConfirm            = { fg = p.text, bg = p.surface0 },
+  NoiceMini               = { fg = p.text, bg = p.surface0 },
+  NoiceFormatProgressDone = { fg = p.crust, bg = p.peach },
+  NoiceFormatProgressTodo = { fg = p.text, bg = p.surface0 },
 
-  -- Mini plugins
-  MiniStatuslineFilename  = { fg = p.subtext1, bg = p.surface0 },
-  MiniStatuslineDevinfo   = { fg = p.text, bg = p.surface1 },
-  MiniStatuslineFileinfo  = { fg = p.subtext1, bg = p.surface0 },
+  -- ── Blink.cmp (completion) ──────────────────────────────────────
+  BlinkCmpLabel               = { fg = p.subtext1 },
+  BlinkCmpLabelDeprecated     = { fg = p.comment, strikethrough = true },
+  BlinkCmpLabelMatch          = { fg = p.peach, bold = true },
+  BlinkCmpLabelDescription    = { fg = p.comment },
+  BlinkCmpLabelDetail         = { fg = p.comment },
+  BlinkCmpKind                = { fg = p.blue },
+  BlinkCmpMenu                = { fg = p.text, bg = p.overlay0 },
+  BlinkCmpMenuBorder          = { fg = p.surface2, bg = p.overlay0 },
+  BlinkCmpMenuSelection       = { bg = p.surface1, bold = true },
+  BlinkCmpScrollBarGutter     = { bg = p.surface1 },
+  BlinkCmpScrollBarThumb      = { bg = p.overlay0 },
+  BlinkCmpDoc                 = { fg = p.text, bg = p.mantle },
+  BlinkCmpDocBorder           = { fg = p.surface2, bg = p.mantle },
+  BlinkCmpSignatureHelp       = { fg = p.text, bg = p.mantle },
+  BlinkCmpSignatureHelpBorder = { fg = p.surface2, bg = p.mantle },
+
+  -- Blink.cmp kind icons (colors match treesitter/LSP token types)
+  BlinkCmpKindText          = { fg = p.green },
+  BlinkCmpKindMethod        = { fg = p.sapphire },
+  BlinkCmpKindFunction      = { fg = p.sapphire },
+  BlinkCmpKindConstructor   = { fg = p.sapphire },
+  BlinkCmpKindField         = { fg = p.peach },
+  BlinkCmpKindVariable      = { fg = p.lavender },
+  BlinkCmpKindClass         = { fg = p.teal },
+  BlinkCmpKindInterface     = { fg = p.teal },
+  BlinkCmpKindModule        = { fg = p.text },
+  BlinkCmpKindProperty      = { fg = p.peach },
+  BlinkCmpKindUnit          = { fg = p.yellow },
+  BlinkCmpKindValue         = { fg = p.yellow },
+  BlinkCmpKindEnum          = { fg = p.teal },
+  BlinkCmpKindKeyword       = { fg = p.mauve },
+  BlinkCmpKindSnippet       = { fg = p.rose },
+  BlinkCmpKindColor         = { fg = p.red },
+  BlinkCmpKindFile          = { fg = p.sapphire },
+  BlinkCmpKindReference     = { fg = p.red },
+  BlinkCmpKindFolder        = { fg = p.sapphire },
+  BlinkCmpKindEnumMember    = { fg = p.gold },
+  BlinkCmpKindConstant      = { fg = p.gold },
+  BlinkCmpKindStruct        = { fg = p.teal },
+  BlinkCmpKindEvent         = { fg = p.yellow },
+  BlinkCmpKindOperator      = { fg = p.pink },
+  BlinkCmpKindTypeParameter = { fg = p.teal },
+  BlinkCmpKindCopilot       = { fg = p.teal },
+
+  -- ── Trouble.nvim ────────────────────────────────────────────────
+  TroubleNormal   = { fg = p.text, bg = p.mantle },
+  TroubleNormalNC = { fg = p.text, bg = p.mantle },
+  TroubleText     = { fg = p.text },
+  TroubleCount    = { fg = p.pink, bg = p.surface1 },
+  TroubleCode     = { fg = p.peach },
+  TroublePos      = { fg = p.comment },
+  TroubleSource   = { fg = p.comment },
+  TroubleIndent   = { fg = p.surface2 },
+  TroublePreview  = { bg = p.surface0 },
+
+  -- ── Todo-comments ───────────────────────────────────────────────
+  TodoBgFIX   = { fg = p.crust, bg = p.red, bold = true },
+  TodoBgTODO  = { fg = p.crust, bg = p.sky, bold = true },
+  TodoBgHACK  = { fg = p.crust, bg = p.yellow, bold = true },
+  TodoBgWARN  = { fg = p.crust, bg = p.yellow, bold = true },
+  TodoBgPERF  = { fg = p.crust, bg = p.peach, bold = true },
+  TodoBgNOTE  = { fg = p.crust, bg = p.teal, bold = true },
+  TodoBgTEST  = { fg = p.crust, bg = p.mauve, bold = true },
+  TodoFgFIX   = { fg = p.red },
+  TodoFgTODO  = { fg = p.sky },
+  TodoFgHACK  = { fg = p.yellow },
+  TodoFgWARN  = { fg = p.yellow },
+  TodoFgPERF  = { fg = p.peach },
+  TodoFgNOTE  = { fg = p.teal },
+  TodoFgTEST  = { fg = p.mauve },
+  TodoSignFIX  = { fg = p.red },
+  TodoSignTODO = { fg = p.sky },
+  TodoSignHACK = { fg = p.yellow },
+  TodoSignWARN = { fg = p.yellow },
+  TodoSignPERF = { fg = p.peach },
+  TodoSignNOTE = { fg = p.teal },
+  TodoSignTEST = { fg = p.mauve },
+
+  -- ── Render-markdown ─────────────────────────────────────────────
+  RenderMarkdownCode       = { bg = p.surface0 },
+  RenderMarkdownCodeInline = { bg = p.surface0 },
+  RenderMarkdownBullet     = { fg = p.sky },
+  RenderMarkdownDash       = { fg = p.surface2 },
+  RenderMarkdownQuote      = { fg = p.comment, italic = true },
+  RenderMarkdownTableHead  = { fg = p.peach, bold = true },
+  RenderMarkdownTableRow   = { fg = p.text },
+  RenderMarkdownLink       = { fg = p.sky, underline = true },
+  RenderMarkdownChecked    = { fg = p.green },
+  RenderMarkdownUnchecked  = { fg = p.comment },
+
+  -- Heading foreground colors (per-variant via heading_mapping)
+  RenderMarkdownH1 = { fg = "{{ headings.h1.hex }}", bold = true },
+  RenderMarkdownH2 = { fg = "{{ headings.h2.hex }}", bold = true },
+  RenderMarkdownH3 = { fg = "{{ headings.h3.hex }}", bold = true },
+  RenderMarkdownH4 = { fg = "{{ headings.h4.hex }}" },
+  RenderMarkdownH5 = { fg = "{{ headings.h5.hex }}" },
+  RenderMarkdownH6 = { fg = "{{ headings.h6.hex }}" },
+
+  -- Heading backgrounds (subtle tint — overrides garish DiffAdd/DiffText defaults)
+  RenderMarkdownH1Bg = { bg = p.surface0 },
+  RenderMarkdownH2Bg = { bg = p.surface0 },
+  RenderMarkdownH3Bg = { bg = p.surface0 },
+  RenderMarkdownH4Bg = { bg = p.surface0 },
+  RenderMarkdownH5Bg = { bg = p.surface0 },
+  RenderMarkdownH6Bg = { bg = p.surface0 },
+
+  -- ── Bufferline ──────────────────────────────────────────────────
+  BufferLineIndicatorSelected = { fg = p.peach },
+  BufferLineFill              = { bg = p.crust },
+  BufferLineBufferSelected    = { fg = p.text, bold = true, italic = false },
+  BufferLineBufferVisible     = { fg = p.subtext0 },
+  BufferLineModified          = { fg = p.peach },
+  BufferLineModifiedSelected  = { fg = p.peach },
+  BufferLineModifiedVisible   = { fg = p.peach },
+
+  -- ── Diffview ────────────────────────────────────────────────────
+  DiffviewNormal              = { fg = p.text, bg = p.mantle },
+  DiffviewDim1                = { fg = p.comment },
+  DiffviewPrimary             = { fg = p.blue },
+  DiffviewSecondary           = { fg = p.green },
+  DiffviewFilePanelTitle      = { fg = p.blue, bold = true },
+  DiffviewFilePanelCounter    = { fg = p.text },
+  DiffviewFilePanelRootPath   = { fg = p.lavender, bold = true },
+  DiffviewFilePanelFileName   = { fg = p.text },
+  DiffviewFilePanelSelected   = { fg = p.yellow },
+  DiffviewFilePanelPath       = { fg = p.comment },
+  DiffviewFilePanelInsertions = { fg = p.green },
+  DiffviewFilePanelDeletions  = { fg = p.red },
+  DiffviewFilePanelConflicts  = { fg = p.yellow },
+  DiffviewFolderName          = { fg = p.sapphire, bold = true },
+  DiffviewFolderSign          = { fg = p.sapphire },
+  DiffviewHash                = { fg = p.rose },
+  DiffviewReference           = { fg = p.blue, bold = true },
+  DiffviewStatusAdded         = { fg = p.green },
+  DiffviewStatusUntracked     = { fg = p.green },
+  DiffviewStatusModified      = { fg = p.yellow },
+  DiffviewStatusRenamed       = { fg = p.yellow },
+  DiffviewStatusDeleted       = { fg = p.red },
+  DiffviewWinSeparator        = { fg = p.surface2, bg = p.base },
+
+  -- ── Mason ───────────────────────────────────────────────────────
+  MasonHeader                    = { fg = p.crust, bg = p.lavender, bold = true },
+  MasonHeaderSecondary           = { fg = p.crust, bg = p.blue, bold = true },
+  MasonHighlight                 = { fg = p.green },
+  MasonHighlightBlock            = { fg = p.crust, bg = p.green },
+  MasonHighlightBlockBold        = { fg = p.crust, bg = p.blue, bold = true },
+  MasonHighlightSecondary        = { fg = p.mauve },
+  MasonHighlightBlockSecondary   = { fg = p.crust, bg = p.blue },
+  MasonMuted                     = { fg = p.overlay0 },
+  MasonMutedBlock                = { fg = p.crust, bg = p.overlay0 },
+  MasonMutedBlockBold            = { fg = p.crust, bg = p.yellow, bold = true },
+  MasonError                     = { fg = p.red },
+  MasonHeading                   = { fg = p.lavender, bold = true },
+
+  -- ── Grug-far (search/replace) ──────────────────────────────────
+  GrugFarResultsMatch = { fg = p.crust, bg = p.peach },
+
+  -- ── Mini plugins ────────────────────────────────────────────────
+  MiniStatuslineFilename    = { fg = p.subtext1, bg = p.surface0 },
+  MiniStatuslineDevinfo     = { fg = p.text, bg = p.surface1 },
+  MiniStatuslineFileinfo    = { fg = p.subtext1, bg = p.surface0 },
   MiniStatuslineModeNormal  = { fg = p.crust, bg = p.blue, bold = true },
   MiniStatuslineModeInsert  = { fg = p.crust, bg = p.peach, bold = true },
   MiniStatuslineModeVisual  = { fg = p.crust, bg = p.mauve, bold = true },
   MiniStatuslineModeCommand = { fg = p.crust, bg = p.yellow, bold = true },
   MiniStatuslineModeReplace = { fg = p.crust, bg = p.red, bold = true },
+  MiniIconsAzure  = { fg = p.sky },
+  MiniIconsBlue   = { fg = p.blue },
+  MiniIconsCyan    = { fg = p.teal },
+  MiniIconsGreen  = { fg = p.green },
+  MiniIconsGrey   = { fg = p.comment },
+  MiniIconsOrange = { fg = p.peach },
+  MiniIconsPurple = { fg = p.mauve },
+  MiniIconsRed    = { fg = p.red },
+  MiniIconsYellow = { fg = p.yellow },
 
-  -- Flash (jump plugin)
+  -- ── Flash (jump plugin) ─────────────────────────────────────────
   FlashLabel   = { fg = p.crust, bg = p.peach, bold = true },
   FlashMatch   = { fg = p.text, bg = p.surface1 },
   FlashCurrent = { fg = p.text, bg = p.surface1 },
 
-  -- Notify
+  -- ── Notify ──────────────────────────────────────────────────────
   NotifyINFOBody   = { fg = p.text },
   NotifyINFOTitle  = { fg = p.sky },
   NotifyINFOIcon   = { fg = p.sky },
